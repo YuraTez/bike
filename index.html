@@ -219,7 +219,7 @@
                     <div class="form-group">
                         <label for="brand" class="form-group__label">Марка<span>*</span></label>
                         <div class="form-row form-row-brand">
-                            <input type="text" class="custom-input" placeholder="Поиск марки" id="brand">
+                            <input type="text" class="custom-input" placeholder="Поиск марки" id="brand" autocomplete="off">
                             <div class="brand-list" id="brandBlock">
 
                             </div>
@@ -228,7 +228,10 @@
                     <div class="form-group">
                         <label for="brandModel" class="form-group__label">Модель</label>
                         <div class="form-row">
-                            <input type="text" class="custom-input" placeholder="Поиск модели" id="brandModel" disabled>
+                            <input type="text" class="custom-input" placeholder="Поиск модели" id="brandModel" autocomplete="off">
+                            <div class="brand-list brand-list--model" id="modelBlock">
+
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -282,6 +285,384 @@
                     </div>
                 </div>
                 <div class="step-form__inner">
+                    <div class="step-form__title">Укажите основные характеристики</div>
+                    <div class="form-group custom-select-inner form-group-custom-select">
+                        <label for="typeMoto" class="form-group__label">Год<span>*</span></label>
+                        <div class="form-row">
+                            <select name="type-moto" class="select-type custom-select" id="year">
+                                <option value="1" selected>
+                                    Год
+                                </option>
+                                <option value="reset">
+                                    Сбросить
+                                </option>
+                                <option value="2010">
+                                    2010
+                                </option>
+                                <option value="2012">
+                                    2012
+                                </option>
+                                <option value="2013">
+                                    2013
+                                </option>
+                                <option value="2014">
+                                    2014
+                                </option>
+                                <option value="2015">
+                                    2015
+                                </option>
+                                <option value="2016">
+                                    2016
+                                </option>
+                                <option value="2017">
+                                    2017
+                                </option>
+                                <option value="2018">
+                                    2018
+                                </option>
+                                <option value="2019">
+                                    2019
+                                </option>
+                                <option value="2020">
+                                    2020
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group form-group--radio-mini">
+                        <label class="form-group__label">Главная передача<span>*</span></label>
+                        <div class="form-row form-row-radio-mini">
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="transmission" id="transmission-1" checked>
+                                <label for="transmission-1" class="radio-mini__label">Цепь</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="transmission" id="transmission-2">
+                                <label for="transmission-2" class="radio-mini__label">Кардан</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="transmission" id="transmission-3">
+                                <label for="transmission-3" class="radio-mini__label">Ремень</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group form-group--radio-mini">
+                        <label class="form-group__label">Тип двигателя<span>*</span></label>
+                        <div class="form-row form-row-radio-mini">
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="motor" id="motor-1">
+                                <label for="motor-1" class="radio-mini__label">Дизель</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="motor" id="motor-2">
+                                <label for="motor-2" class="radio-mini__label">Инжектор</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="motor" id="motor-3">
+                                <label for="motor-3" class="radio-mini__label">Карбюратор</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="motor" id="motor-4">
+                                <label for="motor-4" class="radio-mini__label">Бензин турбонаддув</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group form-group--radio-mini">
+                        <label class="form-group__label">Расположение цилиндров<span>*</span></label>
+                        <div class="form-row form-row-radio-mini">
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="cylinder" id="cylinder-1">
+                                <label for="cylinder-1" class="radio-mini__label">V-образное</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="cylinder" id="cylinder-2">
+                                <label for="cylinder-2" class="radio-mini__label">Оппозитное</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="cylinder" id="cylinder-3">
+                                <label for="cylinder-3" class="radio-mini__label">Рядное</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="cylinder" id="cylinder-4">
+                                <label for="cylinder-4" class="radio-mini__label">Ротор</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group form-group--radio-mini">
+                        <label class="form-group__label">Количество цилиндров<span>*</span></label>
+                        <div class="form-row form-row-radio-mini">
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="NumberCylinder" id="NumberCylinder-1">
+                                <label for="NumberCylinder-1" class="radio-mini__label">1</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="NumberCylinder" id="NumberCylinder-2">
+                                <label for="NumberCylinder-2" class="radio-mini__label">2</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="NumberCylinder" id="NumberCylinder-3">
+                                <label for="NumberCylinder-3" class="radio-mini__label">3</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="NumberCylinder" id="NumberCylinder-4">
+                                <label for="NumberCylinder-4" class="radio-mini__label">4</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="NumberCylinder" id="NumberCylinder-5">
+                                <label for="NumberCylinder-5" class="radio-mini__label">6</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="NumberCylinder" id="NumberCylinder-6">
+                                <label for="NumberCylinder-6" class="radio-mini__label">8</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="NumberCylinder" id="NumberCylinder-7">
+                                <label for="NumberCylinder-7" class="radio-mini__label">10</label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group custom-select-inner form-group-custom-select">
+                        <label for="transmissionBox" class="form-group__label">Коробка<span>*</span></label>
+                        <div class="form-row">
+                            <select name="type-moto" class="select-type custom-select" id="transmissionBox">
+                                <option value="1" selected>
+                                    Коробка
+                                </option>
+                                <option value="reset">
+                                    Сбросить
+                                </option>
+                                <option value="auto">
+                                    Автоматическая
+                                </option>
+                                <option value="robot">
+                                   Робот
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="power" class="form-group__label">Мощность, л.с.<span>*</span></label>
+                        <div class="form-row form-row-brand">
+                            <input type="text" class="custom-input" placeholder="Мощность, л.с." id="power" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group form-group--radio-mini">
+                        <label class="form-group__label">Число тактов<span>*</span></label>
+                        <div class="form-row form-row-radio-mini">
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="cycles" id="cycles-1">
+                                <label for="cycles-1" class="radio-mini__label">2</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="cycles" id="cycles-2">
+                                <label for="cycles-2" class="radio-mini__label">4</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group--radio-color">
+                        <label class="form-group__label">Цвет<span>*</span></label>
+                        <div class="form-row form-row-radio-mini form-row-radio-mini--color">
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-1">
+                                <label for="color-1" class="radio-color__label">
+                                    <span class="_color-item" data-color="#fff"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-2">
+                                <label for="color-2" class="radio-color__label">
+                                    <span class="_color-item" data-color="#D3D3D3"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-3">
+                                <label for="color-3" class="radio-color__label">
+                                    <span class="_color-item" data-color="#0000CD"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-4">
+                                <label for="color-4" class="radio-color__label">
+                                    <span class="_color-item" data-color="#FF4500"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-5">
+                                <label for="color-5" class="radio-color__label">
+                                    <span class="_color-item" data-color="#FF0000"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-7">
+                                <label for="color-7" class="radio-color__label">
+                                    <span class="_color-item" data-color="#FF8C00"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-8">
+                                <label for="color-8" class="radio-color__label">
+                                    <span class="_color-item" data-color="#FFFF00"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-9">
+                                <label for="color-9" class="radio-color__label">
+                                    <span class="_color-item" data-color="#800080"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-10">
+                                <label for="color-10" class="radio-color__label">
+                                    <span class="_color-item" data-color="#0000FF"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-11">
+                                <label for="color-11" class="radio-color__label">
+                                    <span class="_color-item" data-color="#000000"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-12">
+                                <label for="color-12" class="radio-color__label">
+                                    <span class="_color-item" data-color="#20B2AA"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-13">
+                                <label for="color-13" class="radio-color__label">
+                                    <span class="_color-item" data-color="#FFC0CB"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-14">
+                                <label for="color-14" class="radio-color__label">
+                                    <span class="_color-item" data-color="#FF00FF"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-15">
+                                <label for="color-15" class="radio-color__label">
+                                    <span class="_color-item" data-color="#00FA9A"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-16">
+                                <label for="color-16" class="radio-color__label">
+                                    <span class="_color-item" data-color="#00FA9A"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-17">
+                                <label for="color-17" class="radio-color__label">
+                                    <span class="_color-item" data-color="#00FA9A"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-18">
+                                <label for="color-18" class="radio-color__label">
+                                    <span class="_color-item" data-color="#00FA9A"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-19">
+                                <label for="color-19" class="radio-color__label">
+                                    <span class="_color-item" data-color="#00FA9A"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-20">
+                                <label for="color-20" class="radio-color__label">
+                                    <span class="_color-item" data-color="#00FA9A"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-21">
+                                <label for="color-21" class="radio-color__label">
+                                    <span class="_color-item" data-color="#00FA9A"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-22">
+                                <label for="color-22" class="radio-color__label">
+                                    <span class="_color-item" data-color="#00FA9A"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-23">
+                                <label for="color-23" class="radio-color__label">
+                                    <span class="_color-item" data-color="#00FA9A"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-24">
+                                <label for="color-24" class="radio-color__label">
+                                    <span class="_color-item" data-color="#00FA9A"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-25">
+                                <label for="color-25" class="radio-color__label">
+                                    <span class="_color-item" data-color="#00FA9A"></span>
+                                </label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="color" id="color-26">
+                                <label for="color-26" class="radio-color__label">
+                                    <span class="_color-item" data-color="#00FA9A"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="form-group form-group--radio-mini">
+                        <label class="form-group__label">Состояние<span>*</span></label>
+                        <div class="form-row form-row-radio-mini">
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="condition" id="condition-1">
+                                <label for="condition-1" class="radio-mini__label">Новый</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="condition" id="condition-2">
+                                <label for="condition-2" class="radio-mini__label">С пробегом</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="condition" id="condition-3">
+                                <label for="condition-3" class="radio-mini__label">Аварийный</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="condition" id="condition-4">
+                                <label for="condition-4" class="radio-mini__label">На запчасти</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group form-group--radio-mini">
+                        <label class="form-group__label">Продавец<span>*</span></label>
+                        <div class="form-row form-row-radio-mini">
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="seller" id="seller-1">
+                                <label for="seller-1" class="radio-mini__label">Частное лицо</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="seller" id="seller-2">
+                                <label for="seller-2" class="radio-mini__label">Компания</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="numberProduct" class="form-group__label">Оригинальный номер</label>
+                        <div class="form-row form-row-brand">
+                            <input type="text" class="custom-input" placeholder="Введите номер" id="numberProduct" autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-form__inner">
                     <div class="step-form__title">Контактная информация</div>
                     <div class="form-group custom-select-inner form-group-custom-select">
                         <label for="country" class="form-group__label">Страна<span>*</span></label>
@@ -315,7 +696,7 @@
                         </div>
                     </div>
                     <div class="form-group custom-select-inner form-group-custom-select">
-                        <label for="region" class="form-group__label">Страна<span>*</span></label>
+                        <label for="region" class="form-group__label">Область<span>*</span></label>
                         <div class="form-row">
                             <select name="type-moto" class="select-type  custom-select-list" id="region" data-select="region-list">
                                 <option value="1" selected>
@@ -325,7 +706,7 @@
                         </div>
                     </div>
                     <div class="form-group custom-select-inner form-group-custom-select">
-                        <label for="city" class="form-group__label">Страна<span>*</span></label>
+                        <label for="city" class="form-group__label">Город<span>*</span></label>
                         <div class="form-row">
                             <select name="type-moto" class="select-type  custom-select-list" id="city" data-select="city-list">
                                 <option value="m" selected>
