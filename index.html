@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices.min.css"/>
     <link rel="stylesheet" href="css/style.css">
+
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=e2caa9ca-c646-4d64-b8c9-bbe9b1227165" type="text/javascript"></script>
     <title>bike</title>
 </head>
 <body>
@@ -248,6 +250,51 @@
                     </div>
                 </div>
                 <div class="step-form__inner">
+                    <div class="step-form__title">Укажите категорию товара</div>
+                    <div class="form-group">
+                        <label for="brand" class="form-group__label">Категория товара<span>*</span></label>
+                        <div class="form-row ">
+                            <input type="text" class="custom-input">
+                        </div>
+                    </div>
+                    <div class="step-form__btn">
+                        Далее
+                        <svg width="11" height="12" viewBox="0 0 11 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.40796 11.5L11 6.00001C9.59738 4.62435 6.81062 1.87566 5.40799 0.5L4.7022 1.1828C5.96397 2.41998 7.63288 4.06854 9.10532 5.5145L-2.1919e-07 5.51447L-2.61636e-07 6.48553L9.10533 6.48553L4.70223 10.8096L5.40796 11.5Z" fill="white"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="step-form__inner">
+                    <div class="step-form__title">Укажите название запчасти</div>
+                    <div class="form-group">
+                        <label for="brand" class="form-group__label">Категория товара<span>*</span></label>
+                        <div class="form-row ">
+                            <input type="text" class="custom-input">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nameText" class="form-group__label">Название товара<span>*</span></label>
+                        <div class="form-row ">
+                            <textarea name="name" class="custom-textarea" placeholder="Введите название запчасти" id="nameText" maxlength="2000"></textarea>
+                            <div class="textarea-info">
+                                Символов&nbsp;
+                                <div class="textarea-info__number">
+                                    0
+                                </div>
+                                <div class="textarea-info__full">
+                                     /2000
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-form__btn">
+                        Далее
+                        <svg width="11" height="12" viewBox="0 0 11 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.40796 11.5L11 6.00001C9.59738 4.62435 6.81062 1.87566 5.40799 0.5L4.7022 1.1828C5.96397 2.41998 7.63288 4.06854 9.10532 5.5145L-2.1919e-07 5.51447L-2.61636e-07 6.48553L9.10533 6.48553L4.70223 10.8096L5.40796 11.5Z" fill="white"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="step-form__inner">
                     <div class="step-form__title">Укажите категорию</div>
                     <div class="form-group">
                         <label class="form-group__label">Категория<span>*</span></label>
@@ -282,6 +329,37 @@
                                 <label for="rubric-2" class="radio-block__label">машиноместо</label>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-group custom-select-inner form-group-custom-select">
+                        <label for="typeMoto" class="form-group__label">Вид<span>*</span></label>
+                        <div class="form-row">
+                            <select name="type-moto" class="select-type custom-select" id="view">
+                                <option value="1" selected>
+                                    Все виды
+                                </option>
+                                <option value="reset">
+                                    Сбросить
+                                </option>
+                                <option value="view-1">
+                                    2-х колесный
+                                </option>
+                                <option value="view-2">
+                                   3-х колесный
+                                </option>
+                                <option value="view-3">
+                                    с коляской
+                                </option>
+                                <option value="view-4">
+                                    спортивный
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="step-form__btn">
+                        Далее
+                        <svg width="11" height="12" viewBox="0 0 11 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.40796 11.5L11 6.00001C9.59738 4.62435 6.81062 1.87566 5.40799 0.5L4.7022 1.1828C5.96397 2.41998 7.63288 4.06854 9.10532 5.5145L-2.1919e-07 5.51447L-2.61636e-07 6.48553L9.10533 6.48553L4.70223 10.8096L5.40796 11.5Z" fill="white"/>
+                        </svg>
                     </div>
                 </div>
                 <div class="step-form__inner">
@@ -460,7 +538,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="form-group form-group--radio-color">
                         <label class="form-group__label">Цвет<span>*</span></label>
                         <div class="form-row form-row-radio-mini form-row-radio-mini--color">
@@ -616,10 +693,6 @@
                             </div>
                         </div>
                     </div>
-
-
-
-
                     <div class="form-group form-group--radio-mini">
                         <label class="form-group__label">Состояние<span>*</span></label>
                         <div class="form-row form-row-radio-mini">
@@ -660,8 +733,271 @@
                             <input type="text" class="custom-input" placeholder="Введите номер" id="numberProduct" autocomplete="off">
                         </div>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label class="form-group__label">Состояние<span>*</span></label>
+                        <div class="form-row form-row-radio-block">
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="сondition" id="сondition-1" checked>
+                                <label for="сondition-1" class="radio-block__label">Новое</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="сondition" id="сondition-2">
+                                <label for="сondition-2" class="radio-block__label">Б/У</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-group__label">Категория</label>
+                        <div class="form-row form-row-radio-block">
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="status" id="status-1" checked>
+                                <label for="status-1" class="radio-block__label">Продать</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="status" id="status-2">
+                                <label for="status-2" class="radio-block__label">Купить</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-group__label">Вид транспорта<span>*</span></label>
+                        <div class="form-row form-row-radio-block">
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="transport" id="transport-1" checked>
+                                <label for="transport-1" class="radio-block__label">Мотоцикл</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="transport" id="transport-2">
+                                <label for="transport-2" class="radio-block__label">Скутер</label>
+                            </div>
+                            <div class="form-col">
+                                <input type="radio" class="radio-block" name="transport" id="transport-3">
+                                <label for="transport-3" class="radio-block__label">Квадроцикл</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group custom-select-inner form-group-custom-select">
+                        <label for="manufacturer" class="form-group__label">Производитель<span>*</span></label>
+                        <div class="form-row">
+                            <select name="type-moto" class="select-type custom-select" id="manufacturer">
+                                <option value="1" selected>
+                                    Все производители
+                                </option>
+                                <option value="reset">
+                                    Сбросить
+                                </option>
+                                <option value="bmv">
+                                    bmv
+                                </option>
+                                <option value="volvo">
+                                    volvo
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="power" class="form-group__label">Дополнительные параметры</label>
+                        <div class="form-row form-row-checkbox">
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="абс" id="abs">
+                                <label for="abs" class="checkbox-label">АБС</label>
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="Аккустика" id="a">
+                                <label for="a" class="checkbox-label">Аккустика</label>
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="Ветровое стекло" id="b">
+                                <label for="b" class="checkbox-label">Ветровое стекло</label>
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="Ветровое стекло" id="c">
+                                <label for="c" class="checkbox-label">Ветровое стекло</label>
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="абс" id="q">
+                                <label for="q" class="checkbox-label">АБС</label>
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="Аккустика" id="w">
+                                <label for="w" class="checkbox-label">Аккустика</label>
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="Ветровое стекло" id="r">
+                                <label for="r" class="checkbox-label">Ветровое стекло</label>
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="Ветровое стекло" id="t">
+                                <label for="t" class="checkbox-label">Ветровое стекло</label>
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="Старт-стоп" id="y">
+                                <label for="y" class="checkbox-label">Старт-стоп </label>
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="абс" id="u">
+                                <label for="u" class="checkbox-label">АБС</label>
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="Аккустика" id="i">
+                                <label for="i" class="checkbox-label">Аккустика</label>
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="Ветровое стекло" id="o">
+                                <label for="o" class="checkbox-label">Ветровое стекло</label>
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="Ветровое стекло" id="p">
+                                <label for="p" class="checkbox-label">Ветровое стекло</label>
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="Старт-стоп" id="s">
+                                <label for="s" class="checkbox-label">Старт-стоп </label>
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="абс" id="g">
+                                <label for="g" class="checkbox-label">АБС</label>
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="Аккустика" id="f">
+                                <label for="f" class="checkbox-label">Аккустика</label>
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="Ветровое стекло" id="h">
+                                <label for="h" class="checkbox-label">Ветровое стекло</label>
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="Ветровое стекло" id="j">
+                                <label for="j" class="checkbox-label">Ветровое стекло</label>
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="Старт-стоп" id="e">
+                                <label for="e" class="checkbox-label">Старт-стоп </label>
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="Светодиодная подсветка и наружный свет" id="d">
+                                <label for="d" class="checkbox-label">Светодиодная подсветка и наружный свет</label>
+                            </div>
 
+                        </div>
+                    </div>
+                    <div class="step-form__btn">
+                        Далее
+                        <svg width="11" height="12" viewBox="0 0 11 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.40796 11.5L11 6.00001C9.59738 4.62435 6.81062 1.87566 5.40799 0.5L4.7022 1.1828C5.96397 2.41998 7.63288 4.06854 9.10532 5.5145L-2.1919e-07 5.51447L-2.61636e-07 6.48553L9.10533 6.48553L4.70223 10.8096L5.40796 11.5Z" fill="white"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="step-form__inner">
+                    <div class="step-form__title">Цена</div>
+                    <div class="form-group">
+                        <label for="price" class="form-group__label">Цена<span>*</span></label>
+                        <div class="form-group-row">
+                            <input type="text" class="custom-input" placeholder="Например, 1000 BYN" id="price" autocomplete="off">
+                            <div class="form-group custom-select-inner form-group-custom-select select-no_reset">
+                                <div class="form-row">
+                                    <select name="type-moto" class="custom-select" id="currency">
+                                        <option value="BYN" selected>
+                                            BYN
+                                        </option>
+                                        <option value="usd">
+                                            USD
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-row checkbox-row">
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="Цена договорная" id="negotiable">
+                                <label for="negotiable" class="checkbox-label">Цена договорная</label>
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="Обмен" id="swap">
+                                <label for="swap" class="checkbox-label">Обмен</label>
+                            </div>
+                            <div class="col">
+                                <input type="checkbox" class="input-checkbox" name="Торг" id="bargain">
+                                <label for="bargain" class="checkbox-label">Торг</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step-form__inner step-form__inner--big">
+                    <div class="step-form__title">Описание товара</div>
+                    <p class="step-form__subtitle">
+                        *Максимально подробно опишите свой товар, его самые важные свойства и
+                        характеристики – это поможет быстрее найти товар, и принять решение о покупке.
+                    </p>
+                    <div class="form-group">
+                        <div class="form-row">
+                            <textarea name="name" class="custom-textarea" placeholder="Введите название запчасти" id="adDescription" maxlength="2000" data-text="ad-description"></textarea>
+                            <div class="textarea-info">
+                                Символов&nbsp;
+                                <div class="textarea-info__number">
+                                    0
+                                </div>
+                                <div class="textarea-info__full">
+                                    /2000
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ad-description-list" data-text="ad-description">
+                        <div class="ad-description-list__el">Посреднические услуги не предлагать</div>
+                        <div class="ad-description-list__el">Не требует дополнительных вложений</div>
+                        <div class="ad-description-list__el">Возможна продажа в кредит</div>
+                        <div class="ad-description-list__el">Торг возможен при осмотре</div>
+                        <div class="ad-description-list__el">Готов к эксплуатации</div>
+                        <div class="ad-description-list__el">Цена указана с НДС</div>
+                    </div>
+                    <div class="form-group form-group--map-search">
+                        <label for="mapInput" class="form-group__label">Координаты местоположения</label>
+                        <input type="text" class="custom-input" placeholder="[Широта, долгота]" id="mapInput" autocomplete="off">
+                    </div>
+                    <p class="description-text">
+                        Координаты задаются в виде [широта, долгота] через запятую, без пробела, в градусах с десятичной
+                        дробной частью, не более 7 знаков после точки.<br>
+                        <span class="map-example">Пример: 55.777044,37.555554</span>
+                    </p>
+                    <div id="map"></div>
+                    <div class="step-form__btn">
+                        Далее
+                        <svg width="11" height="12" viewBox="0 0 11 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.40796 11.5L11 6.00001C9.59738 4.62435 6.81062 1.87566 5.40799 0.5L4.7022 1.1828C5.96397 2.41998 7.63288 4.06854 9.10532 5.5145L-2.1919e-07 5.51447L-2.61636e-07 6.48553L9.10533 6.48553L4.70223 10.8096L5.40796 11.5Z" fill="white"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="step-form__inner step-form__inner--big">
+                    <div class="step-form__title">Добавление фото / видео материалов</div>
+                    <div class="video-block">
+                        <div class="video-block-text">
+                            <div class="video-block-text-head">
+                                <div class="video-block-icon">
+                                    <img src="img/video.png" alt="img">
+                                </div>
+                                <div class="video-block-title">
+                                    Прикрепить видео из <span>YouTube </span>
+                                </div>
+                            </div>
+                            <div class="video-block-description">
+                                Видео привлекает внимание и повышает шансы на продажу.
+                                Снимите ролик на телефон и загрузите на YouTube. <br>
+                                Мы опубликуем его после проверки модератора.
+                            </div>
+                        </div>
+                        <div class="video-block-input">
+                            <div class="form-group">
+                                <label for="videoLink" class="form-group__label">Ссылка на видео<span>*</span></label>
+                                <div class="form-row form-row-brand">
+                                    <input type="text" class="custom-input" placeholder="" id="videoLink" name="video" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="step-form__inner">
                     <div class="step-form__title">Контактная информация</div>
                     <div class="form-group custom-select-inner form-group-custom-select">
@@ -715,17 +1051,37 @@
                             </select>
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        <div class="data-user-container data-user-container--tel">
+                            <div class="form-tel-container">
+                                <div class="form-group form-group--tel">
+                                    <label for="brand" class="form-group__label">Номер телефона<span>*</span></label>
+                                    <input type="tel" placeholder="+375 (xx) xxx-xx-xx" class="dataUserTel custom-input" id="dataUserTel">
+                                </div>
+                            </div>
+                            <div class="add-new-phone">
+                                <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7.087 5.44545H12V7.60303H7.087V12.5H4.90072V7.60303H0V5.44545H4.90072V0.5H7.087V5.44545Z" fill="#666666"/>
+                                </svg>
+                                <div class="add-new-phone-text">Добавить номер телефона</div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="step-form__btn">
                         Подать объявление
                     </div>
                 </div>
+            </form>
+
+            <form action="">
+
             </form>
         </div>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script>
+<script src="js/jquery.maskedinput.min.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

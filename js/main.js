@@ -1,7 +1,7 @@
 // несколько селектов с кнопкой сброса
 const selectList = document.querySelectorAll(".custom-select");
 
-selectList.forEach((el)=>{
+selectList.forEach((el) => {
     const selectType = new Choices(el, {
         searchEnabled: false,
         shouldSort: false,
@@ -9,12 +9,12 @@ selectList.forEach((el)=>{
 
     el.addEventListener(
         'change',
-        function(event) {
+        function (event) {
             let textContent = event.target.textContent.replace(/\s+/g, '')
-            if(textContent === "Сбросить"){
+            if (textContent === "Сбросить") {
                 selectType.setChoiceByValue('1');
                 $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
-            }else{
+            } else {
                 $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
             }
         },
@@ -26,24 +26,23 @@ selectList.forEach((el)=>{
 $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
 
 
-
 // связанные списки
 let listsArr = {
     minsk: ["Область", "Сбросить", "Минская область", "Брестская область", "Гродненская область", "Гомельская область", "Могилевская область", "Витебская область"],
     brest: ["Область", "Сбросить", "Фрунзунский", "Лененский", "Московский"],
-    grodno: ["Область", "Сбросить" ,"Фрунзунский", "Лененский", "Московский"],
-    gomel: ["Область", "Сбросить" ,"Фрунзунский", "Лененский", "Московский"],
-    mogilev: ["Область", "Сбросить" ,"Фрунзунский", "Лененский", "Московский"],
-    vit: ["Область", "Сбросить" , "Фрунзунский", "Лененский", "Московский"]
+    grodno: ["Область", "Сбросить", "Фрунзунский", "Лененский", "Московский"],
+    gomel: ["Область", "Сбросить", "Фрунзунский", "Лененский", "Московский"],
+    mogilev: ["Область", "Сбросить", "Фрунзунский", "Лененский", "Московский"],
+    vit: ["Область", "Сбросить", "Фрунзунский", "Лененский", "Московский"]
 };
 
 let cityArr = {
     "3": ["Город", "Сбросить", "Минск", "Брест", "Гродн", "Гомель", "Могилев", "Витебск"],
     "4": ["Город", "Сбросить", "Брест", "Гродн", "Гомель"],
-    "5": ["Город", "Сбросить" ,"Брест", "Гродн", "Гомель"],
-    "6": ["Город", "Сбросить" ,"Брест", "Гродн", "Гомель"],
-    "7": ["Город", "Сбросить" ,"Брест", "Гродн", "Гомель"],
-    "8": ["Город", "Сбросить" , "Брест", "Гродн", "Гомель"]
+    "5": ["Город", "Сбросить", "Брест", "Гродн", "Гомель"],
+    "6": ["Город", "Сбросить", "Брест", "Гродн", "Гомель"],
+    "7": ["Город", "Сбросить", "Брест", "Гродн", "Гомель"],
+    "8": ["Город", "Сбросить", "Брест", "Гродн", "Гомель"]
 };
 
 const countryEl = document.querySelector("#country");
@@ -66,8 +65,8 @@ const citySelect = new Choices(cityEl, {
 })
 
 
-function addListener(el , select){
-    $('.custom-select-inner .choices__item--choice[data-id=2]').attr("data-value", "reset");
+function addListener(el, select) {
+    $('.custom-select-inner:not(".select-no_reset") .choices__item--choice[data-id=2]').attr("data-value", "reset");
 
     el.addEventListener(
         'change',
@@ -79,15 +78,15 @@ function addListener(el , select){
             } else {
                 $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
             }
-            $('.custom-select-inner .choices__item--choice[data-id=2]').attr("data-value", "reset");
+            $('.custom-select-inner:not(".select-no_reset") .choices__item--choice[data-id=2]').attr("data-value", "reset");
         },
         false,
     );
 }
 
-addListener(countryEl , countrySelect)
-addListener(regionEl , regionSelect)
-addListener(cityEl , citySelect)
+addListener(countryEl, countrySelect)
+addListener(regionEl, regionSelect)
+addListener(cityEl, citySelect)
 
 window.onload = selectCountry;
 
@@ -109,7 +108,7 @@ function selectCountry(ev) {
 
         regionSelect.setChoices(
             [
-                { value: `${i + 1}`, label: listsArr[itemSelect][i], disabled: false },
+                {value: `${i + 1}`, label: listsArr[itemSelect][i], disabled: false},
 
             ],
             'value',
@@ -118,9 +117,10 @@ function selectCountry(ev) {
         );
 
     }
-    $('.custom-select-inner .choices__item--choice[data-id=2]').attr("data-value", "reset");
+    $('.custom-select-inner:not(".select-no_reset") .choices__item--choice[data-id=2]').attr("data-value", "reset");
     $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
 }
+
 function selectCity(ev) {
     citySelect.clearChoices()
     $('[data-select="city-list"]').empty();
@@ -131,7 +131,7 @@ function selectCity(ev) {
 
         citySelect.setChoices(
             [
-                { value: `${i + 1}`, label: cityArr[itemSelect][i], disabled: false },
+                {value: `${i + 1}`, label: cityArr[itemSelect][i], disabled: false},
 
             ],
             'value',
@@ -139,22 +139,23 @@ function selectCity(ev) {
             false,
         );
     }
-    $('.custom-select-inner .choices__item--choice[data-id=2]').attr("data-value", "reset");
+    $('.custom-select-inner:not(".select-no_reset") .choices__item--choice[data-id=2]').attr("data-value", "reset");
     $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
 }
 
+//вывод бренд и моделей в блоке
 let objBrands = {
-    bmw : {
+    bmw: {
         name: "bmw",
         img: "img/brand/1.svg",
         text: "BMW",
     },
-    Ducati : {
+    Ducati: {
         name: "bmw",
         img: "img/brand/2.svg",
         text: "Ducati",
     },
-    Harley : {
+    Harley: {
         name: "bmw",
         img: "img/brand/3.svg",
         text: "Harley-Davidson",
@@ -164,17 +165,17 @@ let objBrands = {
         img: "img/brand/1.svg",
         text: "Honda",
     },
-    bmw1 : {
+    bmw1: {
         name: "bmw",
         img: "img/brand/1.svg",
         text: "BMW",
     },
-    Ducati1 : {
+    Ducati1: {
         name: "bmw",
         img: "img/brand/2.svg",
         text: "Ducati",
     },
-    Harley1 : {
+    Harley1: {
         name: "bmw",
         img: "img/brand/3.svg",
         text: "Harley-Davidson",
@@ -183,15 +184,15 @@ let objBrands = {
         img: "img/brand/1.svg",
         text: "Honda",
     },
-    bmw2 : {
+    bmw2: {
         img: "img/brand/1.svg",
         text: "BMW",
     },
-    Ducati2 : {
+    Ducati2: {
         img: "img/brand/2.svg",
         text: "Ducati",
     },
-    Harley2 : {
+    Harley2: {
         img: "img/brand/3.svg",
         text: "Harley-Davidson",
     },
@@ -199,15 +200,15 @@ let objBrands = {
         img: "img/brand/1.svg",
         text: "Honda",
     },
-    bmw3 : {
+    bmw3: {
         img: "img/brand/1.svg",
         text: "BMW",
     },
-    Ducati3 : {
+    Ducati3: {
         img: "img/brand/2.svg",
         text: "Ducati",
     },
-    Harley3 : {
+    Harley3: {
         img: "img/brand/3.svg",
         text: "Harley-Davidson",
     },
@@ -215,15 +216,15 @@ let objBrands = {
         img: "img/brand/1.svg",
         text: "Honda",
     },
-    bmw4 : {
+    bmw4: {
         img: "img/brand/1.svg",
         text: "BMW",
     },
-    Ducati4 : {
+    Ducati4: {
         img: "img/brand/2.svg",
         text: "Ducati",
     },
-    Harley4 : {
+    Harley4: {
         img: "img/brand/3.svg",
         text: "Harley-Davidson",
     },
@@ -231,15 +232,15 @@ let objBrands = {
         img: "img/brand/1.svg",
         text: "Honda",
     },
-    bmw5 : {
+    bmw5: {
         img: "img/brand/1.svg",
         text: "BMW",
     },
-    Ducati5 : {
+    Ducati5: {
         img: "img/brand/2.svg",
         text: "Ducati",
     },
-    Harley5 : {
+    Harley5: {
         img: "img/brand/3.svg",
         text: "Harley-Davidson",
     },
@@ -247,31 +248,31 @@ let objBrands = {
         img: "img/brand/1.svg",
         text: "Honda",
     },
-    bmw6 : {
+    bmw6: {
         img: "img/brand/1.svg",
         text: "BMW",
     },
-    Ducati6 : {
+    Ducati6: {
         img: "img/brand/2.svg",
         text: "Ducati",
     },
-    Harley6 : {
+    Harley6: {
         img: "img/brand/3.svg",
         text: "Harley-Davidson",
     },
 };
 let objBrandsFull = {
-    audi : {
+    audi: {
         name: "bmw",
         img: "img/brand/1.svg",
         text: "BMW",
     },
-    audi2 : {
+    audi2: {
         name: "bmw",
         img: "img/brand/2.svg",
         text: "Ducati",
     },
-    audi3 : {
+    audi3: {
         name: "bmw",
         img: "img/brand/3.svg",
         text: "Harley-Davidson",
@@ -281,32 +282,32 @@ let objBrandsFull = {
         img: "img/brand/1.svg",
         text: "Honda",
     },
-    audi5 : {
+    audi5: {
         name: "bmw",
         img: "img/brand/1.svg",
         text: "BMW",
     },
-    audi6 : {
+    audi6: {
         name: "bmw",
         img: "img/brand/2.svg",
         text: "Ducati",
     },
-    audi7 : {
+    audi7: {
         name: "bmw",
         img: "img/brand/3.svg",
         text: "Harley-Davidson",
     },
-    bmw : {
+    bmw: {
         name: "bmw",
         img: "img/brand/1.svg",
         text: "BMW",
     },
-    Ducati : {
+    Ducati: {
         name: "bmw",
         img: "img/brand/2.svg",
         text: "Ducati",
     },
-    Harley : {
+    Harley: {
         name: "bmw",
         img: "img/brand/3.svg",
         text: "Harley-Davidson",
@@ -316,17 +317,17 @@ let objBrandsFull = {
         img: "img/brand/1.svg",
         text: "Honda",
     },
-    bmw1 : {
+    bmw1: {
         name: "bmw",
         img: "img/brand/1.svg",
         text: "BMW",
     },
-    Ducati1 : {
+    Ducati1: {
         name: "bmw",
         img: "img/brand/2.svg",
         text: "Ducati",
     },
-    Harley1 : {
+    Harley1: {
         name: "bmw",
         img: "img/brand/3.svg",
         text: "Harley-Davidson",
@@ -335,15 +336,15 @@ let objBrandsFull = {
         img: "img/brand/1.svg",
         text: "Honda",
     },
-    bmw2 : {
+    bmw2: {
         img: "img/brand/1.svg",
         text: "BMW",
     },
-    Ducati2 : {
+    Ducati2: {
         img: "img/brand/2.svg",
         text: "Ducati",
     },
-    Harley2 : {
+    Harley2: {
         img: "img/brand/3.svg",
         text: "Harley-Davidson",
     },
@@ -351,15 +352,15 @@ let objBrandsFull = {
         img: "img/brand/1.svg",
         text: "Honda",
     },
-    bmw3 : {
+    bmw3: {
         img: "img/brand/1.svg",
         text: "BMW",
     },
-    Ducati3 : {
+    Ducati3: {
         img: "img/brand/2.svg",
         text: "Ducati",
     },
-    Harley3 : {
+    Harley3: {
         img: "img/brand/3.svg",
         text: "Harley-Davidson",
     },
@@ -367,15 +368,15 @@ let objBrandsFull = {
         img: "img/brand/1.svg",
         text: "Honda",
     },
-    bmw4 : {
+    bmw4: {
         img: "img/brand/1.svg",
         text: "BMW",
     },
-    Ducati4 : {
+    Ducati4: {
         img: "img/brand/2.svg",
         text: "Ducati",
     },
-    Harley4 : {
+    Harley4: {
         img: "img/brand/3.svg",
         text: "Harley-Davidson",
     },
@@ -383,15 +384,15 @@ let objBrandsFull = {
         img: "img/brand/1.svg",
         text: "Honda",
     },
-    bmw5 : {
+    bmw5: {
         img: "img/brand/1.svg",
         text: "BMW",
     },
-    Ducati5 : {
+    Ducati5: {
         img: "img/brand/2.svg",
         text: "Ducati",
     },
-    Harley5 : {
+    Harley5: {
         img: "img/brand/3.svg",
         text: "Harley-Davidson",
     },
@@ -399,39 +400,39 @@ let objBrandsFull = {
         img: "img/brand/1.svg",
         text: "Honda",
     },
-    bmw6 : {
+    bmw6: {
         img: "img/brand/1.svg",
         text: "BMW",
     },
-    Ducati6 : {
+    Ducati6: {
         img: "img/brand/2.svg",
         text: "Ducati",
     },
-    Harley6 : {
+    Harley6: {
         img: "img/brand/3.svg",
         text: "Harley-Davidson",
     },
-    Harley7 : {
+    Harley7: {
         img: "img/brand/3.svg",
         text: "Harley-Davidson",
     },
-    Harley11 : {
+    Harley11: {
         img: "img/brand/3.svg",
         text: "Harley-Davidson",
     },
-    Harley112 : {
+    Harley112: {
         img: "img/brand/3.svg",
         text: "Harley-Davidson",
     },
-    Harley22 : {
+    Harley22: {
         img: "img/brand/3.svg",
         text: "Harley-Davidson",
     },
-    Harley23 : {
+    Harley23: {
         img: "img/brand/3.svg",
         text: "Harley-Davidson",
     },
-    Harley24 : {
+    Harley24: {
         img: "img/brand/3.svg",
         text: "Harley-Davidson",
     },
@@ -725,7 +726,7 @@ let objModelFull = {
 }
 
 const templateBrandsItem = (img, text) => {
-return `
+    return `
                                 <div class="brand-list__el">
                                     <div class="brand-list__el__img">
                                         <img src="${img}" alt="img">
@@ -737,7 +738,7 @@ return `
 `
 }
 
-const templateModalItem = (id , name)=>{
+const templateModalItem = (id, name) => {
     return `
     <div class="form-col brand-list__el">
          <input type="radio" class="radio-block" name="modalBrand" id="modal-${id}" value="${name}">
@@ -769,94 +770,84 @@ const templateNotBrands = (text) => {
 const brandBlock = document.querySelector("#brandBlock");
 const modelBlock = document.querySelector("#modelBlock");
 
-function objContent(obj , flag){
+function objContent(obj, flag) {
     brandBlock.innerHTML = "";
     for (let el in obj) {
 
-        let itemBrand = templateBrandsItem(obj[el].img , obj[el].text);
+        let itemBrand = templateBrandsItem(obj[el].img, obj[el].text);
 
         brandBlock.innerHTML = brandBlock.innerHTML + itemBrand;
     }
-    if(flag){
+    if (flag) {
         brandBlock.innerHTML = brandBlock.innerHTML + templateBrandsBtn("Все марки");
-    }else{
+    } else {
         brandBlock.innerHTML = brandBlock.innerHTML + templateNotBrands("Нет моей марки")
     }
-
 }
 
-objContent(objBrands , true)
+objContent(objBrands, true)
 
 const brandInput = document.querySelector("#brand");
 
-brandInput.addEventListener("input" , function (event){
-   let value = this.value;
+brandInput.addEventListener("input", function (event) {
+    let value = this.value;
     brandBlock.innerHTML = ""
     for (let el in objBrandsFull) {
         const statusSearch = objBrandsFull[el].text.toLowerCase().includes(value.toLowerCase().replaceAll(' ', ''));
-       if(statusSearch){
-           let itemBrand = templateBrandsItem(objBrandsFull[el].img , objBrandsFull[el].text);
+        if (statusSearch) {
+            let itemBrand = templateBrandsItem(objBrandsFull[el].img, objBrandsFull[el].text);
 
-           brandBlock.innerHTML = brandBlock.innerHTML + itemBrand;
-       }
+            brandBlock.innerHTML = brandBlock.innerHTML + itemBrand;
+        }
     }
     brandBlock.innerHTML = brandBlock.innerHTML + templateNotBrands("Нет моей марки")
 })
 
-brandInput.addEventListener("click", function (){
+brandInput.addEventListener("click", function () {
     $("#brandBlock").addClass("active");
 })
 
-brandBlock.addEventListener("click" , function (event){
+brandBlock.addEventListener("click", function (event) {
     let target = event.target;
     let content = target.closest(".brand-list__el");
     let noMark = content !== null ? content.hasAttribute("data-mark") : false;
-    if(content && !noMark){
+    if (content && !noMark) {
         brandInput.value = content.textContent.replace(/\s+/g, '');
         $("#brandBlock").removeClass("active");
-    }else if(noMark){
+    } else if (noMark) {
         brandInput.value = "Нет моей марки"
         $("#brandBlock").removeClass("active");
     }
 
-    if(target.closest(".brand-list__el__btn")){
-        objContent(objBrandsFull , false)
+    if (target.closest(".brand-list__el__btn")) {
+        objContent(objBrandsFull, false)
     }
 })
 
-
-
-
-
-
-function objContentModel(obj , flag){
+function objContentModel(obj, flag) {
     modelBlock.innerHTML = "";
     for (let el in obj) {
-        let itemBrand = templateModalItem(obj[el].id , obj[el].name);
+        let itemBrand = templateModalItem(obj[el].id, obj[el].name);
         modelBlock.innerHTML = modelBlock.innerHTML + itemBrand;
     }
-    if(flag){
+    if (flag) {
         modelBlock.innerHTML = modelBlock.innerHTML + templateBrandsBtn("Все марки");
-    }else{
+    } else {
         modelBlock.innerHTML = modelBlock.innerHTML + templateNotBrands("Нет моей марки")
     }
-
 }
 
-
-objContentModel(objModel , true)
-
-
+objContentModel(objModel, true)
 
 const brandModalInput = document.querySelector("#brandModel");
 
-brandModalInput.addEventListener("input" , function (event){
+brandModalInput.addEventListener("input", function (event) {
     let value = this.value;
     modelBlock.innerHTML = ""
     for (let el in objModelFull) {
         const statusSearch = objModelFull[el].name.toLowerCase().includes(value.toLowerCase().replaceAll(' ', ''));
-        if(statusSearch){
-            let itemBrand = templateModalItem(objModelFull[el].id , objModelFull[el].name);
+        if (statusSearch) {
+            let itemBrand = templateModalItem(objModelFull[el].id, objModelFull[el].name);
 
             modelBlock.innerHTML = modelBlock.innerHTML + itemBrand;
         }
@@ -864,62 +855,146 @@ brandModalInput.addEventListener("input" , function (event){
     modelBlock.innerHTML = modelBlock.innerHTML + templateNotBrands("Нет моей марки")
 })
 
-brandModalInput.addEventListener("click", function (){
+brandModalInput.addEventListener("click", function () {
     $("#modelBlock").addClass("active");
 })
 
-modelBlock.addEventListener("click" , function (event){
+modelBlock.addEventListener("click", function (event) {
     let target = event.target;
     let content = target.closest(".brand-list__el");
     let noMark = content !== null ? content.hasAttribute("data-mark") : false;
-    if(content && !noMark){
+    if (content && !noMark) {
         brandModalInput.value = content.textContent.replace(/\s+/g, '').toLowerCase().replaceAll(' ', '');
         $("#modelBlock").removeClass("active");
-    }else if(noMark){
+    } else if (noMark) {
         brandModalInput.value = "Нет моей марки"
         $("#modelBlock").removeClass("active");
     }
 
-    if(target.closest(".brand-list__el__btn")){
-        objContentModel(objModelFull , false)
+    if (target.closest(".brand-list__el__btn")) {
+        objContentModel(objModelFull, false)
     }
 })
 
-
-
-
-
-
-
-
-
-
 const colorLIst = $("._color-item");
 
-$.each(colorLIst , function (key , value){
+//отображение цвета
+$.each(colorLIst, function (key, value) {
     let colorItem = value.getAttribute("data-color");
     value.style.backgroundColor = colorItem;
 })
 
+$(".custom-textarea").on("input", function () {
+    const val = $(this).val();
+    const maxLength = 2000;
+    if (val.length <= maxLength) {
+        $(this).next().find(".textarea-info__number").text(val.length)
+    }
+})
+
+$(".custom-textarea").on('keyup', function () {
+    if (this.scrollTop > 0) {
+        this.style.height = this.scrollHeight + "px";
+    }
+});
 
 
+const selectCurrency = document.querySelector("#currency")
+
+const selectType = new Choices(selectCurrency, {
+    searchEnabled: false,
+    shouldSort: false,
+})
+
+ymaps.ready(init);
+
+function init() {
+    const searchInput = document.querySelector("#mapInput");
+
+    var map = new ymaps.Map('map', {
+            center: [53.90, 27.56],
+            zoom: 12,
+            controls: ['zoomControl'],
+            behaviors: ['drag'],
+        }
+    );
+
+    var searchControl = new ymaps.control.SearchControl({
+        options: {
+            provider: 'yandex#search',
+            noPlacemark: true,
+            noSelect: true,
+        }
+    });
+    map.controls.add(searchControl);
+    var suugestView = new ymaps.SuggestView(searchInput);
+
+    searchInput.addEventListener("input", function () {
+        searchControl.search(this.value);
+        searchControl.events.add('load', function (event) {
+            if (!event.get('skip') && searchControl.getResultsCount()) {
+                searchControl.showResult(0);
+            }
+        });
+    })
+
+    /*    var clusterer = new ymaps.Clusterer({
+            clusterIcons: [
+                {
+                    href: 'img/burger.png',
+                    size: [100, 100],
+                    offset: [-50, -50]
+                }
+            ],
+            clusterIconContentLayout: null
+        });
+
+        map.geoObjects.add(clusterer);*/
+
+}
+
+$(".ad-description-list").on("click", function () {
+    let target = $(event.target);
+    if (target.closest(".ad-description-list__el").length) {
+        let blockVal = $(".custom-textarea[data-text=\"ad-description\"]").val();
+        if (!blockVal) {
+            $(".custom-textarea[data-text=\"ad-description\"]").val(target.text() + ", ");
+        } else {
+            $(".custom-textarea[data-text=\"ad-description\"]").val(blockVal + target.text() + ", ");
+        }
+        target.remove();
+       if(!$(".ad-description-list").children().length){
+           $(".ad-description-list").remove()
+       }
+    }
+})
 
 
+const maskPhone = () => {
+    $(".dataUserTel").mask("+375 (99) 999-99-99");
+}
+
+maskPhone()
 
 
+const templatePhone = function (){
+    return`
+ <div class="form-group form-group--tel__new">
+     <input type="tel" placeholder="+375 (xx) xxx-xx-xx" class="custom-input dataUserTel" name="new-number">
+     <span class="remove_phone">
+     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.09758 6.44252L11.9531 10.298L10.2599 11.9912L6.40441 8.13569L2.56149 11.9786L0.845798 10.2629L4.68872 6.41999L0.842858 2.57413L2.53602 0.880967L6.38188 4.72683L10.2629 0.845859L11.9785 2.56156L8.09758 6.44252Z" fill="#666666"/>
+</svg>
+</span>
+ </div>
+`
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+$('.add-new-phone').on('click', function () {
+    $('.form-tel-container').append(templatePhone)
+    maskPhone()
+    $(".remove_phone").on("click", function (event) {
+        this.parentElement.remove();
+    })
+});
 
