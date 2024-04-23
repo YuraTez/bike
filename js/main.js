@@ -1,30 +1,43 @@
 // несколько селектов с кнопкой сброса
 const selectList = document.querySelectorAll(".custom-select");
 
-selectList.forEach((el) => {
-    const selectType = new Choices(el, {
-        searchEnabled: false,
-        shouldSort: false,
-    })
-
+function listenerSelect(el , select){
     el.addEventListener(
         'change',
         function (event) {
             let textContent = event.target.textContent.replace(/\s+/g, '')
             if (textContent === "Сбросить") {
-                selectType.setChoiceByValue('1');
-                $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
-            } else {
-                $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
+                select.setChoiceByValue('1');
             }
+            setTimeout(()=>{
+                $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
+            },0)
         },
         false,
     );
+}
 
+selectList.forEach((el) => {
+    if(el.classList.contains("selectSearch")){
+        let text = el.getAttribute("data-text")
+        const selectSearch = new Choices(el, {
+            searchEnabled: true,
+            shouldSort: false,
+            searchPlaceholderValue: text,
+        })
+
+        listenerSelect(el ,selectSearch )
+    }else{
+
+        const selectType = new Choices(el, {
+            searchEnabled: false,
+            shouldSort: false,
+        })
+        listenerSelect(el, selectType)
+    }
 })
 
 $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
-
 
 // связанные списки
 let listsArr = {
@@ -998,3 +1011,119 @@ $('.add-new-phone').on('click', function () {
     })
 });
 
+
+$(".size-input").on("change" , function (){
+    const value = this.value.replace(this.getAttribute("data-size") , "")
+    this.value = value.replace(", " , "") + ", " + this.getAttribute("data-size")
+
+})
+
+
+
+
+
+// Загрузка фото в объявлении
+
+let templateImg = (img,name) => {
+    return `
+            <div class="preview-img" data-img="${name}">
+                <img src="${img}" alt="img">
+                <span class="preview-remove" data-file="${name}">
+                <svg width="8" height="9" viewBox="0 0 8 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.46063 0.844419L0.671515 7.63353M7.50912 7.68203L0.623021 0.795925" stroke="white" stroke-width="0.923168" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                </span>
+                <span class="main-photo">Главное фото</span>
+                <span class="ad-main-photo">Сделать главным</span>
+            </div>
+            `
+}
+
+let fileListImg = [];
+
+let loadedImg = ()=>{
+    $(".dropzone_count__loaded").text(fileListImg.length)
+}
+
+function readerImgFile(imgList){
+
+    if (imgList.length !== 0) {
+        imgList.forEach((file)=>{
+
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
+
+            reader.onload = function () {
+                if(fileListImg.length < 10){
+                    $(".dropzone__content").append(templateImg(reader.result, file.name))
+                    fileListImg.push(file);
+                    loadedImg()
+                }else{
+                    alert("Больше нельзя добавлять")
+                }
+            }
+
+        })
+    }
+
+}
+
+$("#inputFile").on("change", function () {
+    let imgList = Array.from(this.files)
+    readerImgFile(imgList)
+    this.value = ""
+})
+
+
+$(".dropzone__content").on("click", ()=>{
+    let target = event.target
+    if(target.closest(".preview-remove")){
+        let dataName = target.closest(".preview-remove").getAttribute("data-file")
+
+        let removeItemImg = fileListImg.find(file => file.name === dataName)
+
+        fileListImg = fileListImg.filter(file => file !== removeItemImg)
+
+        const itemPreview = document.querySelector(`[data-file="${dataName}"]`).closest(".preview-img")
+        itemPreview.classList.add("remove")
+
+        setTimeout(()=>{
+            itemPreview.remove()
+        },300)
+
+    }else if(target.closest(".ad-main-photo")){
+       let previewImgList = document.querySelectorAll(".preview-img");
+        previewImgList.forEach((el)=>{
+            el.classList.remove("is-active");
+        })
+        target.closest(".preview-img").classList.add("is-active");
+    }
+    loadedImg()
+})
+
+function highlightDropZone(event){
+    event.preventDefault()
+    this.classList.add("drop")
+}
+
+function unHighlightDropZone(event){
+    event.preventDefault()
+    this.classList.remove("drop")
+}
+
+const dropzone = document.querySelector(".dropzone")
+
+if(dropzone){
+
+    dropzone.addEventListener("dragover", highlightDropZone)
+    dropzone.addEventListener("dragenter", highlightDropZone)
+    dropzone.addEventListener("dragleave", unHighlightDropZone)
+    dropzone.addEventListener("drop", (event)=>{
+        let dt = event.dataTransfer.files[0]
+        let dtListImg = Array.from(event.dataTransfer.files)
+
+        unHighlightDropZone.call(dropzone, event)
+        readerImgFile(dtListImg)
+    })
+}
+// enf loaded photo

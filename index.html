@@ -251,10 +251,23 @@
                 </div>
                 <div class="step-form__inner">
                     <div class="step-form__title">Укажите категорию товара</div>
-                    <div class="form-group">
-                        <label for="brand" class="form-group__label">Категория товара<span>*</span></label>
-                        <div class="form-row ">
-                            <input type="text" class="custom-input">
+                    <div class="form-group custom-select-inner form-group-custom-select select-search">
+                        <label for="categorySelect" class="form-group__label">Категория товара<span>*</span></label>
+                        <div class="form-row">
+                            <select name="type-moto" class="select-type custom-select selectSearch" id="categorySelect" data-text="Поиск по названию">
+                                <option value="1">
+                                    Поиск по названию
+                                </option>
+                                <option value="reset">
+                                    Сбросить
+                                </option>
+                                <option value="Allround">
+                                    CD-чейнджер
+                                </option>
+                                <option value="Мотоцикл повышенной проходимости">
+                                    GPS трекер
+                                </option>
+                            </select>
                         </div>
                     </div>
                     <div class="step-form__btn">
@@ -266,10 +279,23 @@
                 </div>
                 <div class="step-form__inner">
                     <div class="step-form__title">Укажите название запчасти</div>
-                    <div class="form-group">
-                        <label for="brand" class="form-group__label">Категория товара<span>*</span></label>
-                        <div class="form-row ">
-                            <input type="text" class="custom-input">
+                    <div class="form-group custom-select-inner form-group-custom-select select-search">
+                        <label for="sparesSelect" class="form-group__label">Название запчасти<span>*</span></label>
+                        <div class="form-row">
+                            <select name="type-moto" class="select-type custom-select selectSearch" id="sparesSelect" data-text="Введите название или выберите из списка">
+                                <option value="1">
+                                    Введите название или выберите из списка
+                                </option>
+                                <option value="reset">
+                                    Сбросить
+                                </option>
+                                <option value="труба">
+                                   Труба
+                                </option>
+                                <option value="мотор">
+                                    Мотор
+                                </option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -363,6 +389,35 @@
                     </div>
                 </div>
                 <div class="step-form__inner">
+                    <div class="step-form__title">Укажите технические данные</div>
+                    <div class="form-group row-block">
+                        <div class="form-col">
+                            <label for="lengthProduct" class="form-group__label">Длина, м</label>
+                            <input type="text" class="custom-input size-input" id="lengthProduct" placeholder="Длина, м" data-size="м">
+                        </div>
+                        <div class="form-col">
+                            <label for="widthProduct" class="form-group__label">Ширина, м</label>
+                            <input type="text" class="custom-input size-input" id="widthProduct" placeholder="Ширина, м" data-size="м">
+                        </div>
+                    </div>
+                    <div class="form-group row-block">
+                        <div class="form-col">
+                            <label for="heightProduct" class="form-group__label">Высота, м</label>
+                            <input type="text" class="custom-input size-input" id="heightProduct" placeholder="Высота, м" data-size="м">
+                        </div>
+                        <div class="form-col">
+                            <label for="squareProduct" class="form-group__label">Площадь, м2</label>
+                            <input type="text" class="custom-input size-input" id="squareProduct" placeholder="Площадь, м2" data-size="м2">
+                        </div>
+                    </div>
+                    <div class="step-form__btn">
+                        Далее
+                        <svg width="11" height="12" viewBox="0 0 11 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.40796 11.5L11 6.00001C9.59738 4.62435 6.81062 1.87566 5.40799 0.5L4.7022 1.1828C5.96397 2.41998 7.63288 4.06854 9.10532 5.5145L-2.1919e-07 5.51447L-2.61636e-07 6.48553L9.10533 6.48553L4.70223 10.8096L5.40796 11.5Z" fill="white"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="step-form__inner">
                     <div class="step-form__title">Укажите основные характеристики</div>
                     <div class="form-group custom-select-inner form-group-custom-select">
                         <label for="typeMoto" class="form-group__label">Год<span>*</span></label>
@@ -405,6 +460,35 @@
                                     2020
                                 </option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="form-group row-block row--split">
+                        <div class="form-col form-col--select">
+                            <div class="form-group">
+                                <label for="mileage" class="form-group__label">Пробег<span>*</span></label>
+                                <div class="form-group-row">
+                                    <input type="text" class="custom-input" placeholder="Пробег" id="mileage" autocomplete="off">
+                                    <div class="form-group custom-select-inner form-group-custom-select select-no_reset">
+                                        <div class="form-row">
+                                            <select name="type-moto" class="custom-select">
+                                                <option value="km" selected>
+                                                    км
+                                                </option>
+                                                <option value="1">
+                                                    1
+                                                </option>
+                                                <option value="2">
+                                                    2
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-col form-col--select">
+                            <label for="scopeProduct" class="form-group__label">Объём, см³</label>
+                            <input type="text" class="custom-input size-input" id="scopeProduct" placeholder="Объём, см³" data-size="см³">
                         </div>
                     </div>
                     <div class="form-group form-group--radio-mini">
@@ -759,6 +843,22 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group row-block">
+                        <div class="form-col">
+                            <label for="width2Product" class="form-group__label">Длина, мм</label>
+                            <input type="text" class="custom-input size-input" id="width2Product" placeholder="Длина, мм" data-size="мм">
+                        </div>
+                        <div class="form-col">
+                            <label for="height2Product" class="form-group__label">Ширина, мм</label>
+                            <input type="text" class="custom-input size-input" id="height2Product" placeholder="Ширина, м" data-size="мм">
+                        </div>
+                    </div>
+                    <div class="form-group row-block">
+                        <div class="form-col form-col--100">
+                            <label for="height3Product" class="form-group__label">Диаметр, мм </label>
+                            <input type="text" class="custom-input size-input" id="height3Product" placeholder="Диаметр, мм" data-size="мм">
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="form-group__label">Вид транспорта<span>*</span></label>
                         <div class="form-row form-row-radio-block">
@@ -890,7 +990,7 @@
                 </div>
                 <div class="step-form__inner">
                     <div class="step-form__title">Цена</div>
-                    <div class="form-group">
+                    <div class="form-group row--split">
                         <label for="price" class="form-group__label">Цена<span>*</span></label>
                         <div class="form-group-row">
                             <input type="text" class="custom-input" placeholder="Например, 1000 BYN" id="price" autocomplete="off">
@@ -972,6 +1072,24 @@
                 </div>
                 <div class="step-form__inner step-form__inner--big">
                     <div class="step-form__title">Добавление фото / видео материалов</div>
+                    <div class="dropzone">
+                        <div class="dropzone__description">
+                            <div class="dropzone_count">
+                                <span class="dropzone_count__loaded">0 </span> /10
+                            </div>
+                        </div>
+                        <div class="dropzone__content">
+                            <label for="inputFile" class="preview-img ad-photo">
+                                <input type="file" multiple accept="image/*" id="inputFile">
+                                <span class="input-file-btn">
+                                        <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.7915 7.88856H18.0112V11.0592H10.7915V18.2554H7.57867V11.0592H0.376953V7.88856H7.57867V0.621094H10.7915V7.88856Z" fill="#ACACAC"/>
+</svg>
+                                   Добавить фото
+                                </span>
+                            </label>
+                        </div>
+                    </div>
                     <div class="video-block">
                         <div class="video-block-text">
                             <div class="video-block-text-head">
@@ -1073,9 +1191,6 @@
                 </div>
             </form>
 
-            <form action="">
-
-            </form>
         </div>
     </div>
 </div>
