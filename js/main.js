@@ -1,24 +1,24 @@
 // несколько селектов с кнопкой сброса
 const selectList = document.querySelectorAll(".custom-select");
 
-function listenerSelect(el , select){
+function listenerSelect(el, select) {
     el.addEventListener(
         'change',
         function (event) {
             let textContent = event.target.textContent.replace(/\s+/g, '')
             if (textContent === "Сбросить") {
-                select.setChoiceByValue('1');
+                select.setChoiceByValue('');
             }
-            setTimeout(()=>{
+            setTimeout(() => {
                 $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
-            },0)
+            }, 0)
         },
         false,
     );
 }
 
 selectList.forEach((el) => {
-    if(el.classList.contains("selectSearch")){
+    if (el.classList.contains("selectSearch")) {
         let text = el.getAttribute("data-text")
         const selectSearch = new Choices(el, {
             searchEnabled: true,
@@ -26,8 +26,8 @@ selectList.forEach((el) => {
             searchPlaceholderValue: text,
         })
 
-        listenerSelect(el ,selectSearch )
-    }else{
+        listenerSelect(el, selectSearch)
+    } else {
 
         const selectType = new Choices(el, {
             searchEnabled: false,
@@ -78,7 +78,7 @@ const citySelect = new Choices(cityEl, {
 })
 
 
-function addListener(el, select) {
+function addListener(el, select, selectClear, selectClearSecond) {
     $('.custom-select-inner:not(".select-no_reset") .choices__item--choice[data-id=2]').attr("data-value", "reset");
 
     el.addEventListener(
@@ -88,8 +88,19 @@ function addListener(el, select) {
             if (textContent === "Сбросить") {
                 select.setChoiceByValue('1');
                 $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
+                if (selectClear) {
+                    selectClear.setChoiceByValue('1');
+                    selectClear.disable();
+                }
+                if (selectClearSecond) {
+                    selectClearSecond.setChoiceByValue('1');
+                    selectClearSecond.disable();
+                }
             } else {
                 $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
+                if (selectClear) {
+                    selectClear.enable();
+                }
             }
             $('.custom-select-inner:not(".select-no_reset") .choices__item--choice[data-id=2]').attr("data-value", "reset");
         },
@@ -97,9 +108,9 @@ function addListener(el, select) {
     );
 }
 
-addListener(countryEl, countrySelect)
-addListener(regionEl, regionSelect)
-addListener(cityEl, citySelect)
+addListener(countryEl, countrySelect, regionSelect, citySelect)
+addListener(regionEl, regionSelect, citySelect)
+addListener(cityEl, citySelect, false)
 
 window.onload = selectCountry;
 
@@ -114,24 +125,25 @@ function selectCountry(ev) {
     regionSelect.clearChoices()
     $('[data-select="region-list"]').empty();
     let itemSelect = this.value || "minsk", o;
-    for (let i = 0; i < listsArr[itemSelect].length; i++) {
-        o = new Option(listsArr[itemSelect][i], i, false, false);
-        $('[data-select="region-list"]').append(o);
+    if (listsArr[itemSelect]) {
+        for (let i = 0; i < listsArr[itemSelect].length; i++) {
+            o = new Option(listsArr[itemSelect][i], i, false, false);
+            $('[data-select="region-list"]').append(o);
 
+            regionSelect.setChoices(
+                [
+                    {value: `${i + 1}`, label: listsArr[itemSelect][i], disabled: false},
 
-        regionSelect.setChoices(
-            [
-                {value: `${i + 1}`, label: listsArr[itemSelect][i], disabled: false},
+                ],
+                'value',
+                'label',
+                false,
+            );
+        }
 
-            ],
-            'value',
-            'label',
-            false,
-        );
-
+        $('.custom-select-inner:not(".select-no_reset") .choices__item--choice[data-id=2]').attr("data-value", "reset");
+        $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
     }
-    $('.custom-select-inner:not(".select-no_reset") .choices__item--choice[data-id=2]').attr("data-value", "reset");
-    $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
 }
 
 function selectCity(ev) {
@@ -814,7 +826,18 @@ brandInput.addEventListener("input", function (event) {
         }
     }
     brandBlock.innerHTML = brandBlock.innerHTML + templateNotBrands("Нет моей марки")
+
+    if (this.value) {
+        brandModalInput.removeAttribute("disabled")
+    }
 })
+
+brandInput.addEventListener("change", function (event) {
+    if (this.value) {
+        brandModalInput.removeAttribute("disabled")
+    }
+})
+
 
 brandInput.addEventListener("click", function () {
     $("#brandBlock").addClass("active");
@@ -827,9 +850,11 @@ brandBlock.addEventListener("click", function (event) {
     if (content && !noMark) {
         brandInput.value = content.textContent.replace(/\s+/g, '');
         $("#brandBlock").removeClass("active");
+        brandModalInput.removeAttribute("disabled")
     } else if (noMark) {
         brandInput.value = "Нет моей марки"
         $("#brandBlock").removeClass("active");
+        brandModalInput.removeAttribute("disabled")
     }
 
     if (target.closest(".brand-list__el__btn")) {
@@ -853,6 +878,7 @@ function objContentModel(obj, flag) {
 objContentModel(objModel, true)
 
 const brandModalInput = document.querySelector("#brandModel");
+const brandModification = document.querySelector("#brandModification");
 
 brandModalInput.addEventListener("input", function (event) {
     let value = this.value;
@@ -879,9 +905,11 @@ modelBlock.addEventListener("click", function (event) {
     if (content && !noMark) {
         brandModalInput.value = content.textContent.replace(/\s+/g, '').toLowerCase().replaceAll(' ', '');
         $("#modelBlock").removeClass("active");
+        brandModification.removeAttribute("disabled")
     } else if (noMark) {
         brandModalInput.value = "Нет моей марки"
         $("#modelBlock").removeClass("active");
+        brandModification.removeAttribute("disabled")
     }
 
     if (target.closest(".brand-list__el__btn")) {
@@ -910,7 +938,6 @@ $(".custom-textarea").on('keyup', function () {
         this.style.height = this.scrollHeight + "px";
     }
 });
-
 
 const selectCurrency = document.querySelector("#currency")
 
@@ -950,7 +977,6 @@ function init() {
             }
         });
     })
-
     /*    var clusterer = new ymaps.Clusterer({
             clusterIcons: [
                 {
@@ -963,7 +989,6 @@ function init() {
         });
 
         map.geoObjects.add(clusterer);*/
-
 }
 
 $(".ad-description-list").on("click", function () {
@@ -976,12 +1001,11 @@ $(".ad-description-list").on("click", function () {
             $(".custom-textarea[data-text=\"ad-description\"]").val(blockVal + target.text() + ", ");
         }
         target.remove();
-       if(!$(".ad-description-list").children().length){
-           $(".ad-description-list").remove()
-       }
+        if (!$(".ad-description-list").children().length) {
+            $(".ad-description-list").remove()
+        }
     }
 })
-
 
 const maskPhone = () => {
     $(".dataUserTel").mask("+375 (99) 999-99-99");
@@ -989,9 +1013,8 @@ const maskPhone = () => {
 
 maskPhone()
 
-
-const templatePhone = function (){
-    return`
+const templatePhone = function () {
+    return `
  <div class="form-group form-group--tel__new">
      <input type="tel" placeholder="+375 (xx) xxx-xx-xx" class="custom-input dataUserTel" name="new-number">
      <span class="remove_phone">
@@ -1012,19 +1035,15 @@ $('.add-new-phone').on('click', function () {
 });
 
 
-$(".size-input").on("change" , function (){
-    const value = this.value.replace(this.getAttribute("data-size") , "")
-    this.value = value.replace(", " , "") + ", " + this.getAttribute("data-size")
+$(".size-input").on("change", function () {
+    const value = this.value.replace(this.getAttribute("data-size"), "")
+    this.value = value.replace(", ", "") + ", " + this.getAttribute("data-size")
 
 })
 
-
-
-
-
 // Загрузка фото в объявлении
 
-let templateImg = (img,name) => {
+let templateImg = (img, name) => {
     return `
             <div class="preview-img" data-img="${name}">
                 <img src="${img}" alt="img">
@@ -1041,24 +1060,24 @@ let templateImg = (img,name) => {
 
 let fileListImg = [];
 
-let loadedImg = ()=>{
+let loadedImg = () => {
     $(".dropzone_count__loaded").text(fileListImg.length)
 }
 
-function readerImgFile(imgList){
+function readerImgFile(imgList) {
 
     if (imgList.length !== 0) {
-        imgList.forEach((file)=>{
+        imgList.forEach((file) => {
 
             let reader = new FileReader();
             reader.readAsDataURL(file);
 
             reader.onload = function () {
-                if(fileListImg.length < 10){
+                if (fileListImg.length < 10) {
                     $(".dropzone__content").append(templateImg(reader.result, file.name))
                     fileListImg.push(file);
                     loadedImg()
-                }else{
+                } else {
                     alert("Больше нельзя добавлять")
                 }
             }
@@ -1075,9 +1094,9 @@ $("#inputFile").on("change", function () {
 })
 
 
-$(".dropzone__content").on("click", ()=>{
+$(".dropzone__content").on("click", () => {
     let target = event.target
-    if(target.closest(".preview-remove")){
+    if (target.closest(".preview-remove")) {
         let dataName = target.closest(".preview-remove").getAttribute("data-file")
 
         let removeItemImg = fileListImg.find(file => file.name === dataName)
@@ -1087,13 +1106,13 @@ $(".dropzone__content").on("click", ()=>{
         const itemPreview = document.querySelector(`[data-file="${dataName}"]`).closest(".preview-img")
         itemPreview.classList.add("remove")
 
-        setTimeout(()=>{
+        setTimeout(() => {
             itemPreview.remove()
-        },300)
+        }, 300)
 
-    }else if(target.closest(".ad-main-photo")){
-       let previewImgList = document.querySelectorAll(".preview-img");
-        previewImgList.forEach((el)=>{
+    } else if (target.closest(".ad-main-photo")) {
+        let previewImgList = document.querySelectorAll(".preview-img");
+        previewImgList.forEach((el) => {
             el.classList.remove("is-active");
         })
         target.closest(".preview-img").classList.add("is-active");
@@ -1101,24 +1120,24 @@ $(".dropzone__content").on("click", ()=>{
     loadedImg()
 })
 
-function highlightDropZone(event){
+function highlightDropZone(event) {
     event.preventDefault()
     this.classList.add("drop")
 }
 
-function unHighlightDropZone(event){
+function unHighlightDropZone(event) {
     event.preventDefault()
     this.classList.remove("drop")
 }
 
 const dropzone = document.querySelector(".dropzone")
 
-if(dropzone){
+if (dropzone) {
 
     dropzone.addEventListener("dragover", highlightDropZone)
     dropzone.addEventListener("dragenter", highlightDropZone)
     dropzone.addEventListener("dragleave", unHighlightDropZone)
-    dropzone.addEventListener("drop", (event)=>{
+    dropzone.addEventListener("drop", (event) => {
         let dt = event.dataTransfer.files[0]
         let dtListImg = Array.from(event.dataTransfer.files)
 
@@ -1127,3 +1146,50 @@ if(dropzone){
     })
 }
 // enf loaded photo
+
+
+
+// переход по шагам
+
+function checkFormButton(block){
+    let stateInput = block.querySelector("input:checked") !== null ? true : false;
+    if(!stateInput){
+        block.querySelector(".error-form").classList.add("show");
+    }
+    return stateInput
+}
+
+$(".step-form__btn:not(.step-form__btn-submit)").on("click", function () {
+    let flag = !$(this).hasClass("form__btn--disable") ? true : false;
+    let parent = $(this).parent();
+    let listCheck = parent.find(".check-block");
+    $(".error-form").removeClass("show");
+    $(".error").removeClass("error");
+    
+    if (listCheck.length) {
+        $.each(listCheck, function (i, el) {
+            let tagName = el.tagName.toLowerCase();
+            if(this.classList.contains("form-checked")){
+                flag = checkFormButton(el);
+                if(!flag) return false
+            } else if (!el.value) {
+                flag = false;
+                if (tagName === "select") {
+                    el.closest(".form-group").querySelector(".choices__inner").classList.add("error");
+                } else {
+                    el.classList.add("error");
+                }
+                el.closest(".form-group").querySelector(".error-form").classList.add("show");
+                return false
+            } else if (listCheck.length === i + 1) {
+                flag = true
+            }
+        })
+    } else flag = true
+
+    if (flag) {
+        parent.next().show();
+        $(this).remove()
+    }
+})
+
