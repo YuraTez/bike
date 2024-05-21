@@ -1036,8 +1036,15 @@ $('.add-new-phone').on('click', function () {
 
 
 $(".size-input").on("change", function () {
-    const value = this.value.replace(this.getAttribute("data-size"), "")
-    this.value = value.replace(", ", "") + ", " + this.getAttribute("data-size")
+    if($(this).hasClass("size-input--square")){
+        let result =  squareProduct($("#lengthProduct") , $("#widthProduct") , $("#heightProduct"))
+        console.log(result)
+        $("#squareProduct").val(result + ", м2")
+    }
+    const value = this.value.replace(this.getAttribute("data-size"), "");
+    this.value = value.replace(", ", "") + ", " + this.getAttribute("data-size");
+    
+
 
 })
 
@@ -1193,3 +1200,19 @@ $(".step-form__btn:not(.step-form__btn-submit)").on("click", function () {
     }
 })
 
+const squareProduct = function (a , b , c){
+    if(a.val() && b.val() && c.val()){
+        return a.val().replace(/\D+$/, '') * b.val().replace(/\D+$/, '') * c.val().replace(/\D+$/, '');
+    }
+
+}
+
+let imgList = document.querySelectorAll(".step-category__el__img img");
+
+imgList.forEach((el)=>{
+    let url = el.getAttribute("data-mobile");
+    if(url){
+        el.setAttribute("src" , url)
+    }
+
+})
