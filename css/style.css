@@ -1206,9 +1206,9 @@ input[type="file"]{
   border-color: #d2d2d2 transparent transparent;
 }
 
-.step-form__inner{
+/*.step-form__inner{
   display: none;
-}
+}*/
 
 .step-form__inner.active{
   display: block;

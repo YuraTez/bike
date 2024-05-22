@@ -1,5 +1,6 @@
 // несколько селектов с кнопкой сброса
 const selectList = document.querySelectorAll(".custom-select");
+const selectDisabled = document.querySelector(".select-disabled");
 
 function listenerSelect(el, select) {
     el.addEventListener(
@@ -1038,8 +1039,9 @@ $('.add-new-phone').on('click', function () {
 $(".size-input").on("change", function () {
     if($(this).hasClass("size-input--square")){
         let result =  squareProduct($("#lengthProduct") , $("#widthProduct") , $("#heightProduct"))
-        console.log(result)
-        $("#squareProduct").val(result + ", м2")
+        if(result !== undefined){
+            $("#squareProduct").val(result + ", м2")
+        }
     }
     const value = this.value.replace(this.getAttribute("data-size"), "");
     this.value = value.replace(", ", "") + ", " + this.getAttribute("data-size");
@@ -1152,7 +1154,7 @@ if (dropzone) {
         readerImgFile(dtListImg)
     })
 }
-// enf loaded photo
+// end loaded photo
 
 
 
@@ -1165,6 +1167,39 @@ function checkFormButton(block){
     }
     return stateInput
 }
+$(".check-select-inner label").on("click" , function (ev){
+    ev.stopPropagation();
+})
+
+
+const selectIsDisabled = new Choices(selectDisabled, {
+    searchEnabled: false,
+    shouldSort: false,
+    disabledState: 'is-disabled',
+})
+
+listenerSelect(selectDisabled, selectIsDisabled)
+
+selectIsDisabled.disable()
+
+
+
+$(".check-select-inner").on("click" , function (){
+   let checkList =  $(this).find(".form-checked");
+   let flag ;
+   $.each(checkList , function (e , el){
+       let stateInput = el.querySelector("input:checked") !== null ? true : false;
+       if(!stateInput){
+           return flag = false
+       }else{
+           return flag = true
+       }
+   })
+    if(flag){
+        selectIsDisabled.enable();
+    }
+})
+
 
 $(".step-form__btn:not(.step-form__btn-submit)").on("click", function () {
     let flag = !$(this).hasClass("form__btn--disable") ? true : false;
@@ -1214,5 +1249,4 @@ imgList.forEach((el)=>{
     if(url){
         el.setAttribute("src" , url)
     }
-
 })
