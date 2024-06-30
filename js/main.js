@@ -978,18 +978,6 @@ function init() {
             }
         });
     })
-    /*    var clusterer = new ymaps.Clusterer({
-            clusterIcons: [
-                {
-                    href: 'img/burger.png',
-                    size: [100, 100],
-                    offset: [-50, -50]
-                }
-            ],
-            clusterIconContentLayout: null
-        });
-
-        map.geoObjects.add(clusterer);*/
 }
 
 $(".ad-description-list").on("click", function () {
@@ -1250,3 +1238,5 @@ imgList.forEach((el)=>{
         el.setAttribute("src" , url)
     }
 })
+
+
