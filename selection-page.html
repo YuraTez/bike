@@ -60,20 +60,33 @@
                 </div>
             </div>
         </div>
-
-        <div class="form-row custom-select-inner form-group-custom-select flex-row">
-           <div class="form-row__col">
-               <div class="form-row">
-                   <select id="brand-select"></select>
-               </div>
-           </div>
-            <div class="form-row__col custom-select-inner custom-select--multiple">
-                <select id="model-select" multiple disabled>
-                    <option placeholder >Модель</option>
-                </select>
+        <div class="model-selection">
+            <div class="form-row custom-select-inner form-group-custom-select flex-row">
+                <div class="form-row__col">
+                    <div class="form-row">
+                        <select id="brand-select"></select>
+                    </div>
+                    <div class="form-row add-select select-btn">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.087 4.94545H12V7.10303H7.087V12H4.90072V7.10303H0V4.94545H4.90072V0H7.087V4.94545Z" fill="#666666"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="form-row__col custom-select--multiple">
+                    <div class="form-row">
+                        <select id="model-select" multiple disabled>
+                            <option placeholder>Модель</option>
+                        </select>
+                    </div>
+                    <div class="form-row remove-select select-btn">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.09856 6.44252L11.9541 10.298L10.2609 11.9912L6.40539 8.13569L2.56247 11.9786L0.846775 10.2629L4.68969 6.41999L0.843834 2.57413L2.537 0.880967L6.38286 4.72683L10.2638 0.845859L11.9795 2.56156L8.09856 6.44252Z" fill="#666666"/>
+                        </svg>
+                    </div>
+                </div>
             </div>
-
         </div>
+
 
         <div class="form-row form-row--btn">
             <div class="parameters-btn-inner">

@@ -157,7 +157,11 @@ document.addEventListener('DOMContentLoaded', function () {
     hideSelectItem()
     brandSelect.addEventListener('change', function (event) {
         const selectedBrands = Array.from(brandSelect.selectedOptions).map(option => option.value);
+
         if (selectedBrands.length > 0) {
+            this.parentElement.classList.add("is-active")
+            this.closest(".choices").classList.add("is-active")
+            this.closest(".form-row__col").classList.add("is-active")
             const models = selectedBrands.flatMap(brand => data[brand]);
             const uniqueModels = [...new Set(models)];
 
@@ -171,8 +175,17 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             modelChoices.clearStore();
             modelChoices.enable();
-
         }
+        const textContent = event.target.textContent.replace(/\s+/g, '')
+        if (textContent.includes("Любая")) {
+            brandChoices.setChoiceByValue('Марка');
+            modelChoices.setChoiceByValue('1')
+            modelChoices.disable();
+            this.parentElement.classList.remove("is-active")
+            this.closest(".choices").classList.remove("is-active")
+            this.closest(".form-row__col").classList.remove("is-active")
+        }
+
         hideSelectItem()
     });
 
@@ -188,16 +201,169 @@ document.addEventListener('DOMContentLoaded', function () {
             hideSelectItem()
         }
 
+        if (choiceValue === 'Любая') {
+            setTimeout(()=>{
+                modelChoices.removeActiveItems();
+                modelChoices.hideDropdown()
+                brandChoices.setChoiceByValue('Модель');
+                this.closest(".form-row__col").classList.remove("is-active")
+            })
+        }else{
+            this.closest(".form-row__col").classList.add("is-active")
+        }
+
     });
 
     modelSelect.addEventListener('change', function (event) {
-        const textContent = event.target.textContent.replace(/\s+/g, '')
-        if (textContent.includes("Любая")) {
-
-        }
         hideSelectItem()
     });
+
+    const templateSelect = (id)=>{
+       return `
+     <div class="form-row custom-select-inner form-group-custom-select flex-row">
+            <div class="form-row__col">
+                <div class="form-row">
+                    <select id="brand-select-${id}"></select>
+                </div>
+                <div class="form-row add-select select-btn">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.087 4.94545H12V7.10303H7.087V12H4.90072V7.10303H0V4.94545H4.90072V0H7.087V4.94545Z" fill="#666666"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="form-row__col custom-select--multiple">
+                <div class="form-row">
+                    <select id="model-select-${id}" multiple disabled>
+                        <option placeholder >Модель</option>
+                    </select>
+                </div>
+                <div class="form-row remove-select select-btn">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.09856 6.44252L11.9541 10.298L10.2609 11.9912L6.40539 8.13569L2.56247 11.9786L0.846775 10.2629L4.68969 6.41999L0.843834 2.57413L2.537 0.880967L6.38286 4.72683L10.2638 0.845859L11.9795 2.56156L8.09856 6.44252Z" fill="#666666"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    `
+    }
+
+    function addSelectBrandMark(id){
+
+        const selectList = {
+            [`brandChoices${id}`]: document.getElementById(`brand-select-${id}`),
+            [`modelSelect${id}`]: document.getElementById(`model-select-${id}`)
+        }
+        const brandChoices = new Choices(selectList[`brandChoices${id}`], {
+            placeholder: true,
+            searchPlaceholderValue: 'Марка',
+            duplicateItemsAllowed: true,
+            choices: brandOptions,
+            shouldSort: false,
+            shouldSortItems: false,
+        });
+
+        const modelChoices = new Choices(selectList[`modelSelect${id}`], {
+            placeholder: true,
+            searchPlaceholderValue: 'Модель',
+            choices: ["Модель"],
+            shouldSort: false,
+            resetScrollPosition: false,
+            renderSelectedChoices: 'always',
+            removeItemButton: true,
+            duplicateItemsAllowed: true,
+        });
+
+        hideSelectItem()
+        selectList[`brandChoices${id}`].addEventListener('change', function (event) {
+            const selectedBrands = Array.from(selectList[`brandChoices${id}`].selectedOptions).map(option => option.value);
+
+            if (selectedBrands.length > 0) {
+                this.parentElement.classList.add("is-active")
+                this.closest(".choices").classList.add("is-active")
+                this.closest(".form-row__col").classList.add("is-active")
+                const models = selectedBrands.flatMap(brand => data[brand]);
+                const uniqueModels = [...new Set(models)];
+
+                const modelOptions = uniqueModels.map(model => {
+                    return {value: model, label: model};
+                });
+
+                modelChoices.clearStore();
+                modelChoices.setChoices(modelOptions, 'value', 'label', true);
+                modelChoices.enable();
+            } else {
+                modelChoices.clearStore();
+                modelChoices.enable();
+            }
+            const textContent = event.target.textContent.replace(/\s+/g, '')
+            if (textContent.includes("Любая")) {
+                brandChoices.setChoiceByValue('Марка');
+                modelChoices.setChoiceByValue('1')
+                modelChoices.disable();
+                this.parentElement.classList.remove("is-active")
+                this.closest(".choices").classList.remove("is-active")
+                this.closest(".form-row__col").classList.remove("is-active")
+            }
+
+            hideSelectItem()
+        });
+
+        selectList[`modelSelect${id}`].addEventListener('choice', function (event) {
+            const choiceValue = event.detail.choice.value;
+            if (modelChoices.getValue(true).includes(choiceValue)) {
+                setTimeout(() => {
+                    modelChoices.removeActiveItemsByValue(choiceValue);
+                    $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
+                    $('.custom-select-inner:not(".select-no_reset") .choices__item--choice[data-id=2]').attr("data-value", "reset");
+                }, 0)
+            } else {
+                hideSelectItem()
+            }
+
+            if (choiceValue === 'Любая') {
+                setTimeout(()=>{
+                    modelChoices.removeActiveItems();
+                    modelChoices.hideDropdown()
+                    brandChoices.setChoiceByValue('Модель');
+                    this.closest(".form-row__col").classList.remove("is-active")
+                })
+            }else{
+                this.closest(".form-row__col").classList.add("is-active")
+            }
+
+        });
+
+        selectList[`modelSelect${id}`].addEventListener('change', function (event) {
+            hideSelectItem()
+        });
+    }
+
+    $("body").on("click" , function (event){
+        let target = event.target;
+
+        if(target.closest(".add-select")){
+
+            let numberId = $(".model-selection").children().length
+            $(".model-selection").append(templateSelect(numberId + 1))
+            addSelectBrandMark(numberId + 1)
+            $(".remove-select").removeClass("hide");
+            $(".remove-select").addClass("show");
+
+        } else if(target.closest(".remove-select")){
+            target.closest(".custom-select-inner").remove()
+            if($(".model-selection").children().length < 2){
+                $(".remove-select").addClass("hide");
+                $(".remove-select").removeClass("show");
+            }
+        }
+    })
 });
 
-/*
-is - selected*/
+
+
+
+
+
+
+
+
