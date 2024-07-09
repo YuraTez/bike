@@ -103,8 +103,19 @@ $("body").on("click", function () {
         $(".found-brand__collapse").removeClass("active");
         previewFoundBrand();
     }
+
+    if(!target.closest(".save-search-popup").length && !target.closest(".save-search").length){
+        $(".save-search-popup").removeClass("active");
+    }
 })
 
+
+function hideSelectItem() {
+    setTimeout(() => {
+        $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
+        $('.custom-select-inner:not(".select-no_reset") .choices__item--choice[data-id=2]').attr("data-value", "reset");
+    }, 0)
+}
 
 document.addEventListener('DOMContentLoaded', function () {
     const data = {
@@ -146,13 +157,6 @@ document.addEventListener('DOMContentLoaded', function () {
         removeItemButton: true,
         duplicateItemsAllowed: true,
     });
-
-    function hideSelectItem() {
-        setTimeout(() => {
-            $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
-            $('.custom-select-inner:not(".select-no_reset") .choices__item--choice[data-id=2]').attr("data-value", "reset");
-        }, 0)
-    }
 
     hideSelectItem()
     brandSelect.addEventListener('change', function (event) {
@@ -357,10 +361,149 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     })
+
 });
 
 
 
+const transportSelect = document.getElementById('transportSelect');
+const cylinderSelect = document.getElementById('cylinder');
+const cyclesSelect = document.getElementById('cycles');
+const mainGearSelect = document.getElementById('mainGear');
+const transmissionSelect = document.getElementById('transmission');
+
+
+function selectMultiple(item , name){
+    const selectMultiple = new Choices(item, {
+        placeholder: true,
+        shouldSort: false,
+        resetScrollPosition: false,
+        renderSelectedChoices: 'always',
+        removeItemButton: true,
+        duplicateItemsAllowed: true,
+    });
+
+    item.addEventListener('choice', function (event) {
+        const choiceValue = event.detail.choice.value;
+        if (selectMultiple.getValue(true).includes(choiceValue)) {
+            setTimeout(() => {
+                selectMultiple.removeActiveItemsByValue(choiceValue);
+                $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
+                $('.custom-select-inner:not(".select-no_reset") .choices__item--choice[data-id=2]').attr("data-value", "reset");
+            }, 0)
+        } else {
+            hideSelectItem()
+        }
+
+        if (choiceValue === 'Любая') {
+            setTimeout(()=>{
+                selectMultiple.removeActiveItems();
+                selectMultiple.hideDropdown()
+                this.closest(".form-row__col").classList.remove("is-active")
+            })
+        }else{
+            this.closest(".form-row__col").classList.add("is-active")
+        }
+
+    });
+
+    item.addEventListener('change', function (event) {
+        hideSelectItem()
+    });
+
+    hideSelectItem()
+}
+
+selectMultiple(transportSelect , "Тип мотоцикла")
+selectMultiple(cylinderSelect , "Расположение цилиндров")
+selectMultiple(cyclesSelect , "Число тактов")
+selectMultiple(mainGearSelect , "Главная передача")
+selectMultiple(transmissionSelect , "Коробка")
+cyclesSelect
+let listCustomSelect = document.querySelectorAll(".color-select select");
+
+listCustomSelect.forEach((el)=>{
+    el.addEventListener("change",(event)=>{
+        if(event.target.value !== "reset"){
+            event.target.closest(".choices__inner").classList.add("is-active")
+        }else{
+            event.target.closest(".choices__inner").classList.remove("is-active")
+        }
+    })
+})
+
+let inputChange = document.querySelectorAll(".input-change");
+
+inputChange.forEach(function (el){
+    el.addEventListener("change" , function (){
+        const value = this.value.replace(this.getAttribute("data-text"), "");
+        if(value){
+            this.value = value.replace(", ", "") + ", " + this.getAttribute("data-text");
+            this.parentElement.classList.add("is-active");
+        }else{
+            this.parentElement.classList.remove("is-active")
+        }
+    })
+})
+
+$(".reset-input").on("click" , function (){
+    this.parentElement.classList.remove("is-active")
+})
+
+
+$(".radio-color--checkbox").on("click" , function (event){
+    let target = $(event.target)
+    if(target.closest(".color-btn__arrow").length){
+        $(".radio-color--checkbox").toggleClass("active");
+        $(".color-btn__arrow").toggleClass("rotate");
+    }else if($(".radio-color--checkbox .radio-block:checked").length
+        && $(".radio-color--checkbox .radio-block:checked").length > 0){
+        $(".color-btn__cross").addClass("active");
+        $(".color-btn__arrow").removeClass("active","rotate")
+        $(".radio-color--checkbox").addClass("active");
+    }else{
+        $(".radio-color--checkbox").removeClass("active");
+        $(".color-btn__cross").removeClass("active");
+        $(".color-btn__arrow").removeClass("rotate");
+        $(".color-btn__arrow").addClass("active");
+    }
+})
+
+$(".color-btn__cross").on("click" , function (){
+    $(".radio-color--checkbox .radio-block:checked").each((i , el)=>{
+        el.checked = false;
+        }
+    )
+
+    $(".radio-color--checkbox").removeClass("active");
+    $(".color-btn__cross").removeClass("active");
+    $(".color-btn__arrow").removeClass("rotate");
+    $(".color-btn__arrow").addClass("active");
+})
+
+$(".all-parameters").on("click" , function (){
+    let text = $(".all-parameters__text").text().toLowerCase()
+    console.log(text)
+    if(text === "скрыть"){
+        $(".all-parameters__text").text("Все параметры")
+        $(".inner-more-form").removeClass("active");
+        $(".all-parameters").removeClass("active");
+    }else{
+        $(".inner-more-form").addClass("active");
+        $(".all-parameters").addClass("active");
+        $(".all-parameters__text").text("Скрыть")
+    }
+})
+
+$(".save-search").on("click" , function (){
+    this.classList.add("active");
+    $(".save-search-popup").addClass("active");
+})
+
+$(".search-popup__btn").on("click" , function (){
+    $(".save-search").removeClass("active");
+    $(".save-search-popup").removeClass("active");
+})
 
 
 

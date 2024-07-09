@@ -1033,9 +1033,6 @@ $(".size-input").on("change", function () {
     }
     const value = this.value.replace(this.getAttribute("data-size"), "");
     this.value = value.replace(", ", "") + ", " + this.getAttribute("data-size");
-    
-
-
 })
 
 // Загрузка фото в объявлении
@@ -1238,5 +1235,4 @@ imgList.forEach((el)=>{
         el.setAttribute("src" , url)
     }
 })
-
 
