@@ -447,7 +447,9 @@ inputChange.forEach(function (el){
 })
 
 $(".reset-input").on("click" , function (){
-    this.parentElement.classList.remove("is-active")
+    let inputElem = $(this).parent().find("input");
+    this.parentElement.classList.remove("is-active");
+    inputElem.val(inputElem.attr("placeholder"))
 })
 
 
@@ -483,7 +485,6 @@ $(".color-btn__cross").on("click" , function (){
 
 $(".all-parameters").on("click" , function (){
     let text = $(".all-parameters__text").text().toLowerCase()
-    console.log(text)
     if(text === "скрыть"){
         $(".all-parameters__text").text("Все параметры")
         $(".inner-more-form").removeClass("active");

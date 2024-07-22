@@ -7,7 +7,7 @@ function listenerSelect(el, select) {
         'change',
         function (event) {
             let textContent = event.target.textContent.replace(/\s+/g, '')
-            if (textContent === "Сбросить") {
+            if (textContent === "Сбросить" || textContent === "Любой") {
                 select.setChoiceByValue('');
             }
             setTimeout(() => {

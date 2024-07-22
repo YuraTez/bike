@@ -1676,7 +1676,6 @@ input[type="file"] {
 
 .custom-select--multiple .choices__inner {
   display: flex;
-  gap: 5px;
 }
 
 .choices__inner.is-active {
@@ -2156,9 +2155,14 @@ input[type="file"] {
   }
 }
 
+.choices.is-disabled .choices__input::placeholder{
+  color: #a4a4a4;
+}
 
-
-
+.choices__list--multiple::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
 
 
 
