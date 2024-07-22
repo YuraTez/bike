@@ -2164,7 +2164,13 @@ input[type="file"] {
   height: 0;
 }
 
+.choices.is-disabled:after {
+  border-color: #d2d2d2 transparent transparent;
+}
 
+.choices.is-disabled input{
+  width: 100% !important;
+}
 
 
 

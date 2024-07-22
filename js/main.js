@@ -85,16 +85,17 @@ function addListener(el, select, selectClear, selectClearSecond) {
     el.addEventListener(
         'change',
         function (event) {
-            let textContent = event.target.textContent.replace(/\s+/g, '')
-            if (textContent === "Сбросить") {
+            let textContent = event.target.textContent.replace(/\s+/g, '').toLowerCase()
+            if (textContent === "сбросить" || textContent === "любая") {
+                select.setChoiceByValue('');
                 select.setChoiceByValue('1');
                 $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
                 if (selectClear) {
-                    selectClear.setChoiceByValue('1');
+                    selectClear.setChoiceByValue('');
                     selectClear.disable();
                 }
                 if (selectClearSecond) {
-                    selectClearSecond.setChoiceByValue('1');
+                    selectClearSecond.setChoiceByValue('');
                     selectClearSecond.disable();
                 }
             } else {
