@@ -104,7 +104,7 @@
         </div>
         <div class="model-selection">
             <div class="form-row custom-select-inner form-group-custom-select flex-row">
-                <div class="form-row__col">
+                <div class="form-row__col store-active row--brand">
                     <div class="form-row">
                         <select id="brand-select"></select>
                     </div>
@@ -137,25 +137,25 @@
                             <option placeholder>Тип мотоцикла</option>
                             <option value="Любая">Любой</option>
                             <option value="3">Все внедорожные</option>
-                            <option value="4">Allround</option>
-                            <option value="5">Внедорожный Эндуро</option>
-                            <option value="6">Мотоцикл повышенной проходимости</option>
-                            <option value="7">Спортивный Эндуро</option>
-                            <option value="8">Туристический Эндуро</option>
-                            <option value="9">Дорожный</option>
-                            <option value="10">Классик</option>
-                            <option value="11">Все круизеры / чопперы</option>
-                            <option value="12">Спортивный Эндуро</option>
-                            <option value="13">Туристический Эндуро</option>
-                            <option value="14">Дорожный</option>
-                            <option value="15">Классик</option>
+                            <option value="Allround">Allround</option>
+                            <option value="Внедорожный Эндуро">Внедорожный Эндуро</option>
+                            <option value="Мотоцикл повышенной проходимости">Мотоцикл повышенной проходимости</option>
+                            <option value="Спортивный Эндуро">Спортивный Эндуро</option>
+                            <option value="Туристический Эндуро">Туристический Эндуро</option>
+                            <option value="Дорожный">Дорожный</option>
+                            <option value="Классик">Классик</option>
+                            <option value="Все круизеры / чопперы">Все круизеры / чопперы</option>
+                            <option value="Спортивный Эндуро">Спортивный Эндуро</option>
+                            <option value="Туристический Эндуро">Туристический Эндуро</option>
+                            <option value="Дорожный">Дорожный</option>
+                            <option value="Классик">Классик</option>
                         </select>
                     </div>
                 </div>
             </div>
             <div class="form-row__col">
-                <div class="form-row__col">
-                    <div class="form-group custom-select-inner form-group-custom-select left-select color-select">
+                <div class="form-row__col store-active">
+                    <div class="form-group custom-select-inner form-group-custom-select left-select color-select year-start">
                         <select name="type-moto" class="select-type custom-select right-select">
                             <option value="" selected>
                                 Год, от
@@ -182,7 +182,7 @@
                     </div>
                 </div>
                 <div class="form-row__col">
-                    <div class="form-group custom-select-inner form-group-custom-select right-select color-select">
+                    <div class="form-group custom-select-inner form-group-custom-select right-select color-select year-end">
                         <select name="type-moto" class="select-type custom-select">
                             <option value="" selected>
                                 до
@@ -211,9 +211,9 @@
             </div>
         </div>
         <div class="form-row flex-row">
-            <div class="form-row__col">
+            <div class="form-row__col form-row__col--price">
                 <div class="form-row__col">
-                    <input type="text" class="custom-input input-change left-input" placeholder="Цена (BYN), от" data-text="BYN">
+                    <input type="text" class="custom-input input-change left-input price-start" placeholder="Цена (BYN), от" data-text="BYN">
                     <span class="reset-input">
                         <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M8.98109 1.35706L1.69526 8.64289M9.03313 8.69493L1.64322 1.30502" stroke="#ED1C24" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -221,12 +221,24 @@
                     </span>
                 </div>
                 <div class="form-row__col">
-                    <input type="text" class="custom-input input-change right-input" placeholder="до" data-text="BYN">
+                    <input type="text" class="custom-input input-change right-input price-end" placeholder="до" data-text="BYN">
                     <span class="reset-input">
                         <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M8.98109 1.35706L1.69526 8.64289M9.03313 8.69493L1.64322 1.30502" stroke="#ED1C24" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
                     </span>
+                </div>
+                <div class="form-row__col">
+                    <div class="form-group form-group-custom-select color-select">
+                        <select name="currency" class="select-type custom-select">
+                            <option value="BYN" selected>
+                                BYN
+                            </option>
+                            <option value="USD">
+                                USD
+                            </option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="form-row__col">
@@ -341,7 +353,7 @@
                 </div>
             </div>
             <div class="form-row flex-row">
-                <div class="form-row__col-30">
+                <div class="form-row__col form-row__col-30">
                     <div class="custom-select-inner form-group-custom-select">
                         <div class="custom-select--multiple">
                             <select id="cylinder" multiple>
@@ -720,7 +732,7 @@
                     </svg>
                 </div>
                 <div class="reset-parameters">
-                    <div class="cnt-parameters">12</div>
+                    <div class="cnt-parameters">0</div>
                     <button type="reset">
                         Сбросить <span class="no-mobile">фильтры</span>
                         <svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg">

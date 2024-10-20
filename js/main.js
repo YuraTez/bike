@@ -9,6 +9,8 @@ function listenerSelect(el, select) {
             let textContent = event.target.textContent.replace(/\s+/g, '')
             if (textContent === "Сбросить" || textContent === "Любой") {
                 select.setChoiceByValue('');
+            }else{
+                changePrice()
             }
             setTimeout(() => {
                 $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
@@ -17,6 +19,45 @@ function listenerSelect(el, select) {
         false,
     );
 }
+
+const priceUsd = 3.3;
+
+function changePrice(){
+    let startPrice = document.querySelector(".price-start");
+    let endPrice = document.querySelector(".price-end");
+    let localСurrency = startPrice.getAttribute("data-text").toLowerCase();
+    if(localСurrency === "byn"){
+        startPrice.setAttribute("data-text" , "USD");
+        startPrice.setAttribute("placeholder" , "Цена (USD), от");
+        endPrice.setAttribute("data-text" , "USD");
+        if(startPrice.value){
+            let sumStart = startPrice.value.slice(0,-5);
+            console.log(sumStart)
+            startPrice.value = (sumStart / priceUsd).toFixed(2) + ", " + "USD";
+        }
+        if(endPrice.value){
+            let sumStart = endPrice.value.slice(0,-5);
+            endPrice.value = (sumStart / priceUsd).toFixed(2) + ", " + "USD";
+        }
+    }else{
+        startPrice.setAttribute("data-text" , "BYN");
+        startPrice.setAttribute("placeholder" , "Цена (BYN), от");
+        endPrice.setAttribute("data-text" , "BYN");
+
+        if(startPrice.value){
+            let sumStart = startPrice.value.slice(0,-5);
+            startPrice.value = (sumStart * priceUsd).toFixed(2) + ", " + "BYN";
+        }
+        if(endPrice.value){
+            let sumStart = endPrice.value.slice(0,-5);
+            endPrice.value = (sumStart * priceUsd).toFixed(2) + ", " + "BYN";
+        }
+    }
+
+    /*this.value = value.replace(", ", "") + ", " + this.getAttribute("data-text");*/
+}
+
+let selectTypes = [];
 
 selectList.forEach((el) => {
     if (el.classList.contains("selectSearch")) {
@@ -35,8 +76,23 @@ selectList.forEach((el) => {
             shouldSort: false,
         })
         listenerSelect(el, selectType)
+        selectTypes.push(selectType);
     }
 })
+
+$(".reset-parameters , .search-popup__btn").on("click", function () {
+    $(".is-active").removeClass("is-active");
+    cntParamСontent.textContent = "0";
+
+    selectTypes.forEach(selectType => {
+        selectType.setChoiceByValue('');
+    });
+    regionSelect.setChoiceByValue('1');
+    citySelect.setChoiceByValue('1');
+
+
+    $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
+});
 
 $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
 
@@ -77,6 +133,10 @@ const citySelect = new Choices(cityEl, {
     searchEnabled: false,
     shouldSort: false,
 })
+
+selectTypes.push(countrySelect);
+selectTypes.push(regionSelect);
+selectTypes.push(citySelect);
 
 
 function addListener(el, select, selectClear, selectClearSecond) {

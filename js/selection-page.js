@@ -163,6 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const selectedBrands = Array.from(brandSelect.selectedOptions).map(option => option.value);
 
         if (selectedBrands.length > 0) {
+            cntParam(1 , this.closest(".form-row__col"))
             this.parentElement.classList.add("is-active")
             this.closest(".choices").classList.add("is-active")
             this.closest(".form-row__col").classList.add("is-active")
@@ -185,6 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
             brandChoices.setChoiceByValue('Марка');
             modelChoices.setChoiceByValue('1')
             modelChoices.disable();
+            cntParam(-1 ,this.closest(".form-row__col"))
             this.parentElement.classList.remove("is-active")
             this.closest(".choices").classList.remove("is-active")
             this.closest(".form-row__col").classList.remove("is-active")
@@ -207,12 +209,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (choiceValue === 'Любая') {
             setTimeout(()=>{
+                cntParam(-1 ,  this.closest(".form-row__col"))
                 modelChoices.removeActiveItems();
                 modelChoices.hideDropdown()
                 brandChoices.setChoiceByValue('Модель');
                 this.closest(".form-row__col").classList.remove("is-active")
             })
         }else{
+            cntParam(1 ,  this.closest(".form-row__col"))
             this.closest(".form-row__col").classList.add("is-active")
         }
 
@@ -225,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const templateSelect = (id)=>{
        return `
      <div class="form-row custom-select-inner form-group-custom-select flex-row">
-            <div class="form-row__col">
+            <div class="form-row__col row--brand">
                 <div class="form-row">
                     <select id="brand-select-${id}"></select>
                 </div>
@@ -282,6 +286,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const selectedBrands = Array.from(selectList[`brandChoices${id}`].selectedOptions).map(option => option.value);
 
             if (selectedBrands.length > 0) {
+                cntParam(1 , this.closest(".form-row__col"))
                 this.parentElement.classList.add("is-active")
                 this.closest(".choices").classList.add("is-active")
                 this.closest(".form-row__col").classList.add("is-active")
@@ -304,9 +309,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 brandChoices.setChoiceByValue('Марка');
                 modelChoices.setChoiceByValue('1')
                 modelChoices.disable();
+                cntParam(-1 , this.closest(".form-row__col"))
                 this.parentElement.classList.remove("is-active")
                 this.closest(".choices").classList.remove("is-active")
                 this.closest(".form-row__col").classList.remove("is-active")
+
             }
 
             hideSelectItem()
@@ -329,7 +336,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     modelChoices.removeActiveItems();
                     modelChoices.hideDropdown()
                     brandChoices.setChoiceByValue('Модель');
+                    cntParam(-1 , this.closest(".form-row__col"))
                     this.closest(".form-row__col").classList.remove("is-active")
+
                 })
             }else{
                 this.closest(".form-row__col").classList.add("is-active")
@@ -399,10 +408,14 @@ function selectMultiple(item , name){
             setTimeout(()=>{
                 selectMultiple.removeActiveItems();
                 selectMultiple.hideDropdown()
+                cntParam(-1 ,this.closest(".form-row__col"))
                 this.closest(".form-row__col").classList.remove("is-active")
+
             })
         }else{
+            cntParam(1 , this.closest(".form-row__col"))
             this.closest(".form-row__col").classList.add("is-active")
+
         }
 
     });
@@ -419,14 +432,16 @@ selectMultiple(cylinderSelect , "Расположение цилиндров")
 selectMultiple(cyclesSelect , "Число тактов")
 selectMultiple(mainGearSelect , "Главная передача")
 selectMultiple(transmissionSelect , "Коробка")
-cyclesSelect
+
 let listCustomSelect = document.querySelectorAll(".color-select select");
 
 listCustomSelect.forEach((el)=>{
     el.addEventListener("change",(event)=>{
         if(event.target.value !== "reset"){
+            cntParam(1 , event.target.closest(".choices__inner"))
             event.target.closest(".choices__inner").classList.add("is-active")
         }else{
+            cntParam(-1 , event.target.closest(".choices__inner"))
             event.target.closest(".choices__inner").classList.remove("is-active")
         }
     })
@@ -438,15 +453,18 @@ inputChange.forEach(function (el){
     el.addEventListener("change" , function (){
         const value = this.value.replace(this.getAttribute("data-text"), "");
         if(value){
+            cntParam(1 , this.parentElement)
             this.value = value.replace(", ", "") + ", " + this.getAttribute("data-text");
             this.parentElement.classList.add("is-active");
         }else{
+            cntParam(-1 , this.parentElement)
             this.parentElement.classList.remove("is-active")
         }
     })
 })
 
 $(".reset-input").on("click" , function (){
+    cntParam(-1 , this.parentElement)
     let inputElem = $(this).parent().find("input");
     this.parentElement.classList.remove("is-active");
     inputElem.val(inputElem.attr("placeholder"))
@@ -499,6 +517,7 @@ $(".all-parameters").on("click" , function (){
 $(".save-search").on("click" , function (){
     this.classList.add("active");
     $(".save-search-popup").addClass("active");
+    selectableItems();
 })
 
 $(".search-popup__btn").on("click" , function (){
@@ -507,7 +526,80 @@ $(".search-popup__btn").on("click" , function (){
 })
 
 
+function addBrandToString(brandName, brandString) {
+    const lowerCaseBrandName = brandName.toLowerCase();
+    const lowerCaseBrandString = brandString.toLowerCase();
+    if (lowerCaseBrandString.includes(lowerCaseBrandName)) {
+        return brandString;
+    }
+    const updatedBrandString = brandString ? `${brandString}, ${brandName}` : brandName;
+    return updatedBrandString;
+}
 
+
+function selectableItems(){
+    let saveBrand = document.querySelector(".search-popup__mark");
+    saveBrand.textContent = ""
+    let saveParam = document.querySelector(".search-popup__parameters");
+    saveParam.textContent = ""
+    let arrSelectable = document.querySelectorAll(".choices__inner.is-active , .form-row__col.is-active");
+
+    arrSelectable.forEach((el)=>{
+       let content = el.querySelector(".choices__item--selectable");
+       let brand = el.closest(".row--brand");
+        if (brand) {
+            saveBrand.textContent = addBrandToString(content.getAttribute("data-value"), saveBrand.textContent);
+        } else if (el.classList.contains("custom-select--multiple")) {
+            let multipleItems = el.querySelectorAll(".choices__list--multiple .choices__item--selectable");
+            let brandName = el.closest(".form-row").querySelector(".row--brand .choices__item--selectable").getAttribute("data-value");
+            multipleItems.forEach((multiItem) => {
+                let brandMark = multiItem.getAttribute("data-value");
+                let str = `${brandName} ${brandMark}`;
+                saveBrand.textContent = addBrandToString(str, saveBrand.textContent);
+                let regEx = brandName + ",";
+                saveBrand.textContent = saveBrand.textContent.replace(regEx, '')
+            })
+        }else if (el.querySelector(".custom-select--multiple")){
+            let multipleItems = el.querySelectorAll(".choices__list--multiple .choices__item--selectable");
+            multipleItems.forEach((multiItem) => {
+                let brandMark = multiItem.getAttribute("data-value");
+                saveParam.textContent = addBrandToString(brandMark, saveParam.textContent);
+            })
+        }else if(el.classList.contains("choices__inner")){
+            let textContent = el.querySelector(".choices__item--selectable").getAttribute("data-value");
+            if(el.closest(".year-end")){
+                saveParam.textContent = saveParam.textContent + `-${textContent}`
+            }else{
+                saveParam.textContent = addBrandToString(textContent, saveParam.textContent);
+            }
+
+        }
+        else  {
+            saveParam.textContent = addBrandToString(el.querySelector("input").value, saveParam.textContent);
+        }
+    })
+}
+let cntParamСontent = document.querySelector(".cnt-parameters");
+
+function cntParam(num , el){
+
+    if(!el.classList.contains("is-active")){
+        cntParamСontent.textContent = +cntParamСontent.textContent + num;
+    }else if(num < 0){
+        cntParamСontent.textContent = +cntParamСontent.textContent + num;
+    }
+}
+
+function activeItems(){
+    let activeItem = document.querySelectorAll(".store-active");
+    activeItem.forEach((el)=>{
+        el.querySelector(".choices__inner").classList.add("is-active");
+    })
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    activeItems()
+}, false);
 
 
 
