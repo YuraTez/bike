@@ -193,6 +193,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         hideSelectItem()
+        modelSelect.closest(".is-active").classList.remove("is-active")
     });
 
     modelSelect.addEventListener('choice', function (event) {
@@ -219,6 +220,8 @@ document.addEventListener('DOMContentLoaded', function () {
             cntParam(1 ,  this.closest(".form-row__col"))
             this.closest(".form-row__col").classList.add("is-active")
         }
+
+        listItemMultiple(this)
 
     });
 
@@ -338,7 +341,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     brandChoices.setChoiceByValue('Модель');
                     cntParam(-1 , this.closest(".form-row__col"))
                     this.closest(".form-row__col").classList.remove("is-active")
-
                 })
             }else{
                 this.closest(".form-row__col").classList.add("is-active")
@@ -373,14 +375,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
-
-
 const transportSelect = document.getElementById('transportSelect');
 const cylinderSelect = document.getElementById('cylinder');
 const cyclesSelect = document.getElementById('cycles');
 const mainGearSelect = document.getElementById('mainGear');
 const transmissionSelect = document.getElementById('transmission');
 
+
+function listItemMultiple(item) {
+    setTimeout(()=>{
+        let container = item.parentNode.querySelector(".choices__list--multiple");
+        let allElem = Array.from(item.querySelectorAll("option")).map(item => item.innerText)
+
+        $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
+        $('.custom-select-inner:not(".select-no_reset") .choices__item--choice[data-id=2]').attr("data-value", "reset");
+        if (item.length) {
+            let concatStr = allElem.reduce((str, el) => str + "; " + el)
+            container.innerHTML = `
+              <div class="multipleSelectedContent">${concatStr}</div>
+              <div class="multipleSelectedCnt">(${item.length})</div>
+              `;
+        }
+    })
+}
 
 function selectMultiple(item , name){
     const selectMultiple = new Choices(item, {
@@ -413,15 +430,11 @@ function selectMultiple(item , name){
 
             })
         }else{
-            cntParam(1 , this.closest(".form-row__col"))
+            cntParam(1 , this.closest(".form-row__col"));
             this.closest(".form-row__col").classList.add("is-active")
 
         }
-
-    });
-
-    item.addEventListener('change', function (event) {
-        hideSelectItem()
+        listItemMultiple(item)
     });
 
     hideSelectItem()
@@ -550,19 +563,21 @@ function selectableItems(){
         if (brand) {
             saveBrand.textContent = addBrandToString(content.getAttribute("data-value"), saveBrand.textContent);
         } else if (el.classList.contains("custom-select--multiple")) {
-            let multipleItems = el.querySelectorAll(".choices__list--multiple .choices__item--selectable");
+            let multipleItems = el.querySelector(".choices__list--multiple .multipleSelectedContent").innerText;
             let brandName = el.closest(".form-row").querySelector(".row--brand .choices__item--selectable").getAttribute("data-value");
+            multipleItems = multipleItems.split(";");
             multipleItems.forEach((multiItem) => {
-                let brandMark = multiItem.getAttribute("data-value");
+                let brandMark = multiItem;
                 let str = `${brandName} ${brandMark}`;
                 saveBrand.textContent = addBrandToString(str, saveBrand.textContent);
                 let regEx = brandName + ",";
                 saveBrand.textContent = saveBrand.textContent.replace(regEx, '')
             })
         }else if (el.querySelector(".custom-select--multiple")){
-            let multipleItems = el.querySelectorAll(".choices__list--multiple .choices__item--selectable");
+            let multipleItems = el.querySelector(".choices__list--multiple .multipleSelectedContent").innerText;
+            multipleItems = multipleItems.split(";");
             multipleItems.forEach((multiItem) => {
-                let brandMark = multiItem.getAttribute("data-value");
+                let brandMark = multiItem;
                 saveParam.textContent = addBrandToString(brandMark, saveParam.textContent);
             })
         }else if(el.classList.contains("choices__inner")){
@@ -582,7 +597,6 @@ function selectableItems(){
 let cntParamСontent = document.querySelector(".cnt-parameters");
 
 function cntParam(num , el){
-
     if(!el.classList.contains("is-active")){
         cntParamСontent.textContent = +cntParamСontent.textContent + num;
     }else if(num < 0){

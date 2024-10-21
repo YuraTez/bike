@@ -53,8 +53,6 @@ function changePrice(){
             endPrice.value = (sumStart * priceUsd).toFixed(2) + ", " + "BYN";
         }
     }
-
-    /*this.value = value.replace(", ", "") + ", " + this.getAttribute("data-text");*/
 }
 
 let selectTypes = [];
@@ -91,7 +89,10 @@ $(".reset-parameters , .search-popup__btn").on("click", function () {
     citySelect.setChoiceByValue('1');
 
 
-    $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
+    setTimeout(()=>{
+        $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
+        $('.custom-select-inner:not(".select-no_reset") .choices__item--choice[data-id=2]').attr("data-value", "reset");
+    })
 });
 
 $('.custom-select-inner .choices__item--choice[data-id=1]').hide();

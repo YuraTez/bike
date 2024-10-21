@@ -1654,10 +1654,21 @@ input[type="file"] {
 }
 
 .choices__list--multiple {
+  max-width: 100%;
   display: flex;
-  max-width: 86%;
   flex-wrap: nowrap;
-  overflow: scroll;
+  gap: 3px;
+  line-height: 27px;
+  font-weight: 400;
+  font-size: 14px;
+  color: #ed1c24;
+}
+
+.multipleSelectedContent{
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .choices__list--multiple .choices__item {
@@ -1825,6 +1836,7 @@ input[type="file"] {
 }
 
 .is-active .custom-select--multiple .choices__input {
+  display: none;
   max-width: 30%;
   min-width: initial !important;
   width: initial !important;
@@ -2231,4 +2243,14 @@ input[type="file"] {
   .form-row__col--price .choices[data-type*=select-one]:after{
     right: 17px;
   }
+}
+
+.selection-block .is-active .form-group-custom-select .choices__inner,
+.form-group-custom-select .is-active  .choices__inner{
+  background: #ffeded;
+}
+
+.choices__list--multiple .choices__item,
+.selection-block .form-group-custom-select .is-active .choices__input{
+  display: none;
 }
