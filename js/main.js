@@ -9,7 +9,7 @@ function listenerSelect(el, select) {
             let textContent = event.target.textContent.replace(/\s+/g, '')
             if (textContent === "Сбросить" || textContent === "Любой") {
                 select.setChoiceByValue('');
-            }else{
+            }else if(el.getAttribute("name") === "currency"){
                 changePrice()
             }
             setTimeout(() => {
@@ -20,7 +20,6 @@ function listenerSelect(el, select) {
     );
 }
 
-const priceUsd = 3.3;
 
 function changePrice(){
     let startPrice = document.querySelector(".price-start");
@@ -33,11 +32,11 @@ function changePrice(){
         if(startPrice.value){
             let sumStart = startPrice.value.slice(0,-5);
             console.log(sumStart)
-            startPrice.value = (sumStart / priceUsd).toFixed(2) + ", " + "USD";
+            startPrice.value = sumStart + ", " + "USD";
         }
         if(endPrice.value){
             let sumStart = endPrice.value.slice(0,-5);
-            endPrice.value = (sumStart / priceUsd).toFixed(2) + ", " + "USD";
+            endPrice.value = sumStart + ", " + "USD";
         }
     }else{
         startPrice.setAttribute("data-text" , "BYN");
@@ -46,11 +45,11 @@ function changePrice(){
 
         if(startPrice.value){
             let sumStart = startPrice.value.slice(0,-5);
-            startPrice.value = (sumStart * priceUsd).toFixed(2) + ", " + "BYN";
+            startPrice.value = sumStart + ", " + "BYN";
         }
         if(endPrice.value){
             let sumStart = endPrice.value.slice(0,-5);
-            endPrice.value = (sumStart * priceUsd).toFixed(2) + ", " + "BYN";
+            endPrice.value = sumStart + ", " + "BYN";
         }
     }
 }

@@ -138,6 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const brandSelect = document.getElementById('brand-select');
     const modelSelect = document.getElementById('model-select');
+
     const brandChoices = new Choices(brandSelect, {
         placeholder: true,
         searchPlaceholderValue: 'Марка',
@@ -187,13 +188,13 @@ document.addEventListener('DOMContentLoaded', function () {
             modelChoices.setChoiceByValue('1')
             modelChoices.disable();
             cntParam(-1 ,this.closest(".form-row__col"))
-            this.parentElement.classList.remove("is-active")
-            this.closest(".choices").classList.remove("is-active")
-            this.closest(".form-row__col").classList.remove("is-active")
+            let activeEl = Array.from(this.closest(".form-group-custom-select").querySelectorAll(".is-active"));
+            activeEl.forEach((el)=>{
+                el.classList.remove("is-active")
+            })
         }
 
         hideSelectItem()
-        modelSelect.closest(".is-active").classList.remove("is-active")
     });
 
     modelSelect.addEventListener('choice', function (event) {
@@ -313,9 +314,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 modelChoices.setChoiceByValue('1')
                 modelChoices.disable();
                 cntParam(-1 , this.closest(".form-row__col"))
-                this.parentElement.classList.remove("is-active")
-                this.closest(".choices").classList.remove("is-active")
-                this.closest(".form-row__col").classList.remove("is-active")
+                let activeEl = Array.from(this.closest(".form-group-custom-select").querySelectorAll(".is-active"));
+                activeEl.forEach((el)=>{
+                    el.classList.remove("is-active")
+                })
 
             }
 
@@ -344,6 +346,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
             }else{
                 this.closest(".form-row__col").classList.add("is-active")
+                listItemMultiple(this)
             }
 
         });
@@ -395,6 +398,9 @@ function listItemMultiple(item) {
               <div class="multipleSelectedContent">${concatStr}</div>
               <div class="multipleSelectedCnt">(${item.length})</div>
               `;
+        }else{
+            cntParam(-1 ,item.closest(".form-row__col"))
+            item.closest(".form-row__col").classList.remove("is-active")
         }
     })
 }
@@ -583,7 +589,14 @@ function selectableItems(){
         }else if(el.classList.contains("choices__inner")){
             let textContent = el.querySelector(".choices__item--selectable").getAttribute("data-value");
             if(el.closest(".year-end")){
-                saveParam.textContent = saveParam.textContent + `-${textContent}`
+                let yearStart = document.querySelector(".year-start select").value
+                console.log(yearStart)
+                if(yearStart){
+                    saveParam.textContent = saveParam.textContent + `-${textContent}`
+                }else{
+                    saveParam.textContent = saveParam.textContent + `${textContent}`
+                }
+
             }else{
                 saveParam.textContent = addBrandToString(textContent, saveParam.textContent);
             }
