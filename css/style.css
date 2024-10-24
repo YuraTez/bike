@@ -2254,3 +2254,27 @@ input[type="file"] {
 .selection-block .form-group-custom-select .is-active .choices__input{
   display: none;
 }
+
+
+.form-group-custom-select .choices__list--dropdown .choices__item--disabled{
+  padding-left: 20px;
+  font-size: 13px;
+  color: #9f9f9f;
+  pointer-events: none;
+  user-select: none;
+}
+
+.form-group-custom-select .choices__list--dropdown .choices__item--disabled[data-value="all_group"]{
+  border-top: 1px solid #ebebeb;
+}
+
+.row--brand .choices[data-type*=select-one] .choices__input.choices__input--cloned{
+  bottom: 0;
+  width: 90%;
+  background: #fafafa;
+  border: none;
+  height: 38px;
+  top: 1px;
+  left: 1px;
+  padding-left: 30px;
+}

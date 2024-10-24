@@ -121,24 +121,56 @@ document.addEventListener('DOMContentLoaded', function () {
     const data = {
         "Марка": [],
         "Любая": ['Модель', 'Любая', 'S1000RR', 'R1250GS', 'F850GS', 'CBR600RR', 'Africa Twin', 'CB500X', 'Panigale V4', 'Monster 821', 'Scrambler', 'Duke 790', 'RC 390', 'Adventure 1290'],
-        BMW: ['Модель', 'Любая', 'S1000RR', 'R1250GS', 'F850GS'],
-        Honda: ['Модель', 'Любая', 'CBR600RR', 'Africa Twin', 'CB500X'],
-        Ducati: ['Модель', 'Любая', 'Panigale V4', 'Monster 821', 'Scrambler'],
-        Kawasaki: ['Модель', 'Любая', 'Ninja ZX-10R', 'Z650', 'Versys 1000'],
-        Yamaha: ['Модель', 'Любая', 'YZF-R1', 'MT-09', 'Tenere 700'],
-        'Harley-Davidson': ['Модель', 'Любая', 'Sportster', 'Street Glide', 'Road King'],
-        KTM: ['Модель', 'Любая', 'Duke 790', 'RC 390', 'Adventure 1290'],
-        Triumph: ['Модель', 'Любая', 'Street Triple', 'Tiger 800', 'Bonneville'],
+        "Популярные": {
+            BMW: ['Модель', 'Любая', 'S1000RR', 'R1250GS', 'F850GS'],
+            Honda: ['Модель', 'Любая', 'CBR600RR', 'Africa Twin', 'CB500X'],
+            Ducati: ['Модель', 'Любая', 'Panigale V4', 'Monster 821', 'Scrambler'],
+        },
+        "Все": {
+            Kawasaki: ['Модель', 'Любая', 'Ninja ZX-10R', 'Z650', 'Versys 1000'],
+            Yamaha: ['Модель', 'Любая', 'YZF-R1', 'MT-09', 'Tenere 700'],
+            'Harley-Davidson': ['Модель', 'Любая', 'Sportster', 'Street Glide', 'Road King'],
+            KTM: ['Модель', 'Любая', 'Duke 790', 'RC 390', 'Adventure 1290'],
+            Triumph: ['Модель', 'Любая', 'Street Triple', 'Tiger 800', 'Bonneville'],
+        }
     };
 
-    const brandOptions = Object.keys(data).map(name => {
-        return {value: name, label: name};
-    });
+// Формируем структуру выбора
+    const brandOptions = [
+        // Кнопка сброса "Любая"
+        { value: 'Марка', label: 'Марка'},
+        { value: 'Любая', label: 'Любая', customProperties: { type: 'reset' } },
+
+        // Популярные марки
+        {
+            value: 'popular_group',
+            label: 'Популярные',
+            disabled: true,
+            customProperties: { type: 'group' }
+        },
+        ...Object.keys(data['Популярные']).map(brand => ({
+            value: brand,
+            label: brand,
+            customProperties: { group: 'Популярные' }
+        })),
+
+        // Все мотоциклы
+        {
+            value: 'all_group',
+            label: 'Все',
+            disabled: true,
+            customProperties: { type: 'group' }
+        },
+        ...Object.keys(data['Все']).map(brand => ({
+            value: brand,
+            label: brand,
+            customProperties: { group: 'Все' }
+        }))
+    ];
 
 
     const brandSelect = document.getElementById('brand-select');
     const modelSelect = document.getElementById('model-select');
-
     const brandChoices = new Choices(brandSelect, {
         placeholder: true,
         searchPlaceholderValue: 'Марка',
@@ -146,6 +178,9 @@ document.addEventListener('DOMContentLoaded', function () {
         choices: brandOptions,
         shouldSort: false,
         shouldSortItems: false,
+        searchEnabled: true,
+        searchChoices: true
+
     });
 
     const modelChoices = new Choices(modelSelect, {
@@ -158,26 +193,51 @@ document.addEventListener('DOMContentLoaded', function () {
         removeItemButton: true,
         duplicateItemsAllowed: true,
     });
+    function moveSearchField() {
+        const choicesContainer = document.querySelector('.row--brand .choices');
 
+        const searchInput = choicesContainer.querySelector('.choices__input.choices__input--cloned');
+
+        const dropdown = choicesContainer.querySelector('.choices__list--dropdown');
+
+        if (searchInput && dropdown) {
+            choicesContainer.insertBefore(searchInput, dropdown);
+        }
+    }
+
+    moveSearchField();
+
+    setTimeout(moveSearchField, 100);
     hideSelectItem()
-    brandSelect.addEventListener('change', function (event) {
-        const selectedBrands = Array.from(brandSelect.selectedOptions).map(option => option.value);
 
-        if (selectedBrands.length > 0) {
+    brandSelect.addEventListener('change', function (event) {
+        const selectedBrand = event.target.value;
+
+        if (selectedBrand.length > 0) {
             cntParam(1 , this.closest(".form-row__col"))
             this.parentElement.classList.add("is-active")
             this.closest(".choices").classList.add("is-active")
             this.closest(".form-row__col").classList.add("is-active")
-            const models = selectedBrands.flatMap(brand => data[brand]);
-            const uniqueModels = [...new Set(models)];
+            let models = [];
 
-            const modelOptions = uniqueModels.map(model => {
-                return {value: model, label: model};
-            });
-
+            if (data['Популярные'][selectedBrand]) {
+                models = data['Популярные'][selectedBrand]
+            } else if (data['Все'][selectedBrand]) {
+                models = data['Все'][selectedBrand]
+            }
             modelChoices.clearStore();
-            modelChoices.setChoices(modelOptions, 'value', 'label', true);
+            modelChoices.setChoices(
+                [
+                    ...models.map(model => ({ value: model, label: model }))
+                ],
+                'value',
+                'label',
+                true
+            );
+            this.closest(".form-row__col").classList.add("is-active");
             modelChoices.enable();
+
+            hideSelectItem()
         } else {
             modelChoices.clearStore();
             modelChoices.enable();
@@ -193,7 +253,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 el.classList.remove("is-active")
             })
         }
-
+        this.closest(".form-group-custom-select").querySelector(".custom-select--multiple").classList.remove("is-active")
         hideSelectItem()
     });
 
@@ -223,10 +283,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         listItemMultiple(this)
-
-    });
-
-    modelSelect.addEventListener('change', function (event) {
         hideSelectItem()
     });
 
@@ -287,23 +343,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
         hideSelectItem()
         selectList[`brandChoices${id}`].addEventListener('change', function (event) {
-            const selectedBrands = Array.from(selectList[`brandChoices${id}`].selectedOptions).map(option => option.value);
-
-            if (selectedBrands.length > 0) {
+            const selectedBrand = event.target.value;
+            if (selectedBrand.length > 0) {
                 cntParam(1 , this.closest(".form-row__col"))
                 this.parentElement.classList.add("is-active")
                 this.closest(".choices").classList.add("is-active")
                 this.closest(".form-row__col").classList.add("is-active")
-                const models = selectedBrands.flatMap(brand => data[brand]);
-                const uniqueModels = [...new Set(models)];
+                let models = [];
 
-                const modelOptions = uniqueModels.map(model => {
-                    return {value: model, label: model};
-                });
-
+                if (data['Популярные'][selectedBrand]) {
+                    models = data['Популярные'][selectedBrand]
+                } else if (data['Все'][selectedBrand]) {
+                    models = data['Все'][selectedBrand]
+                }
                 modelChoices.clearStore();
-                modelChoices.setChoices(modelOptions, 'value', 'label', true);
+                modelChoices.setChoices(
+                    [
+                        ...models.map(model => ({ value: model, label: model }))
+                    ],
+                    'value',
+                    'label',
+                    true
+                );
+                this.closest(".form-row__col").classList.add("is-active");
+                
                 modelChoices.enable();
+
+                hideSelectItem()
             } else {
                 modelChoices.clearStore();
                 modelChoices.enable();
@@ -313,14 +379,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 brandChoices.setChoiceByValue('Марка');
                 modelChoices.setChoiceByValue('1')
                 modelChoices.disable();
-                cntParam(-1 , this.closest(".form-row__col"))
+                cntParam(-1 ,this.closest(".form-row__col"))
                 let activeEl = Array.from(this.closest(".form-group-custom-select").querySelectorAll(".is-active"));
                 activeEl.forEach((el)=>{
                     el.classList.remove("is-active")
                 })
-
             }
-
+            this.closest(".form-group-custom-select").querySelector(".custom-select--multiple").classList.remove("is-active")
             hideSelectItem()
         });
 
@@ -345,6 +410,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     this.closest(".form-row__col").classList.remove("is-active")
                 })
             }else{
+                console.log('1111')
+                cntParam(1 , this.closest(".form-row__col"))
                 this.closest(".form-row__col").classList.add("is-active")
                 listItemMultiple(this)
             }
@@ -368,6 +435,13 @@ document.addEventListener('DOMContentLoaded', function () {
             $(".remove-select").addClass("show");
 
         } else if(target.closest(".remove-select")){
+           let lengthItem = target.closest(".custom-select-inner").querySelectorAll(".is-active").length;
+           let activeElem = target.closest(".custom-select-inner").querySelector(".is-active")
+           if(lengthItem < 4){
+               cntParam(-1 , activeElem)
+           }else{
+               cntParam(-2 , activeElem)
+           }
             target.closest(".custom-select-inner").remove()
             if($(".model-selection").children().length < 2){
                 $(".remove-select").addClass("hide");
