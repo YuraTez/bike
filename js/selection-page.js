@@ -582,11 +582,11 @@ $(".radio-color--checkbox").on("click" , function (event){
     }
 })
 
-$(".color-btn__cross").on("click" , function (){
-    $(".radio-color--checkbox .radio-block:checked").each((i , el)=>{
+$(".color-btn__cross").on("click", function () {
+    cntParamСontent.textContent = +cntParamСontent.textContent - $(".radio-color--checkbox .radio-block:checked").length;
+    $(".radio-color--checkbox .radio-block:checked").each((i, el) => {
         el.checked = false;
-        }
-    )
+    })
 
     $(".radio-color--checkbox").removeClass("active");
     $(".color-btn__cross").removeClass("active");
@@ -636,6 +636,9 @@ function selectableItems(){
     let saveParam = document.querySelector(".search-popup__parameters");
     saveParam.textContent = ""
     let arrSelectable = document.querySelectorAll(".choices__inner.is-active , .form-row__col.is-active");
+    let checkboxList = document.querySelectorAll("input[type='checkbox']:checked")
+    let radioList = document.querySelectorAll("input[type='radio']:checked")
+
 
     arrSelectable.forEach((el)=>{
        let content = el.querySelector(".choices__item--selectable");
@@ -664,7 +667,6 @@ function selectableItems(){
             let textContent = el.querySelector(".choices__item--selectable").getAttribute("data-value");
             if(el.closest(".year-end")){
                 let yearStart = document.querySelector(".year-start select").value
-                console.log(yearStart)
                 if(yearStart){
                     saveParam.textContent = saveParam.textContent + `-${textContent}`
                 }else{
@@ -680,6 +682,24 @@ function selectableItems(){
             saveParam.textContent = addBrandToString(el.querySelector("input").value, saveParam.textContent);
         }
     })
+
+    checkboxList.forEach((el)=>{
+        let str = `${el.value}`;
+        saveParam.textContent = addBrandToString(str, saveParam.textContent);
+        let regEx = el.value + ",";
+        saveParam.textContent = saveParam.textContent.replace(regEx, '')
+    });
+    radioList.forEach((el)=>{
+        let elValue = el.value.toLowerCase();
+        console.log(elValue)
+        if (elValue !== "неважно" && elValue !== "все"){
+            let str = `${el.value}`;
+            saveParam.textContent = addBrandToString(str, saveParam.textContent);
+            let regEx = el.value + ",";
+            saveParam.textContent = saveParam.textContent.replace(regEx, '')
+        }
+    })
+
 }
 let cntParamСontent = document.querySelector(".cnt-parameters");
 
@@ -702,5 +722,22 @@ document.addEventListener('DOMContentLoaded', function() {
     activeItems()
 }, false);
 
+$('.selection-block input[type="checkbox"]').on('click', function() {
+    if ($(this).is(':checked')) {
+        cntParamСontent.textContent = +cntParamСontent.textContent + 1;
+    } else {
+        cntParamСontent.textContent = +cntParamСontent.textContent - 1;
+    }
+});
 
-
+$('input[type="radio"]').on('click', function() {
+    let container = this.closest(".form-row-radio-block")
+    let elValue = $(this).val().toLowerCase();
+    if(!container.classList.contains("active")){
+        container.classList.add("active");
+        cntParamСontent.textContent = +cntParamСontent.textContent + 1;
+    }else if(elValue === "неважно" || elValue === "все"){
+        cntParamСontent.textContent = +cntParamСontent.textContent - 1;
+        container.classList.remove("active");
+    }
+});
