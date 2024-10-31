@@ -107,6 +107,7 @@ let listsArr = {
 };
 
 let cityArr = {
+    "1": ["Город", "Сбросить", "Минск", "Брест", "Гродн", "Гомель", "Могилев", "Витебск"],
     "3": ["Город", "Сбросить", "Минск", "Брест", "Гродн", "Гомель", "Могилев", "Витебск"],
     "4": ["Город", "Сбросить", "Брест", "Гродн", "Гомель"],
     "5": ["Город", "Сбросить", "Брест", "Гродн", "Гомель"],
@@ -140,17 +141,49 @@ selectTypes.push(citySelect);
 
 
 function addListener(el, select, selectClear, selectClearSecond) {
+    let cntParamСontent = document.querySelector(".cnt-parameters");
     $('.custom-select-inner:not(".select-no_reset") .choices__item--choice[data-id=2]').attr("data-value", "reset");
 
     el.addEventListener(
         'change',
         function (event) {
+            let flagActiveItem = this.closest(".form-row__col-30").classList.contains("is-active");
+            let cityFlag = cityEl.closest(".form-row__col-30").classList.contains("is-active");
+            let regionFlag = regionEl.closest(".form-row__col-30").classList.contains("is-active");
             let textContent = event.target.textContent.replace(/\s+/g, '').toLowerCase()
             if (textContent === "сбросить" || textContent === "любая") {
+                let attribute = el.getAttribute("id");
+                if(attribute === "country"){
+                    regionSelect.setChoiceByValue('1');
+                    citySelect.setChoiceByValue('1');
+                    $(".location-group-select .is-active").removeClass("is-active")
+                    if(flagActiveItem && regionFlag && cityFlag){
+                        cntParamСontent.textContent = +cntParamСontent.textContent - 3;
+                    }else if(flagActiveItem && regionFlag){
+                        cntParamСontent.textContent = +cntParamСontent.textContent - 2;
+                    }else if(flagActiveItem){
+                        cntParamСontent.textContent = +cntParamСontent.textContent - 1;
+                    }
+
+                }else if(attribute === "region"){
+                    cityEl.closest(".is-active") ? cityEl.closest(".is-active").classList.remove("is-active") : false
+                    citySelect.setChoiceByValue('1');
+                    if(flagActiveItem && cityFlag){
+                        cntParamСontent.textContent = +cntParamСontent.textContent - 2;
+                    }else if(flagActiveItem){
+                        cntParamСontent.textContent = +cntParamСontent.textContent - 1;
+                    }
+                }else{
+                    if(flagActiveItem){
+                        cntParamСontent.textContent = +cntParamСontent.textContent - 1;
+                    }
+                }
+
                 select.setChoiceByValue('');
                 select.setChoiceByValue('1');
                 $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
                 if (selectClear) {
+
                     selectClear.setChoiceByValue('');
                     selectClear.disable();
                 }
@@ -158,11 +191,17 @@ function addListener(el, select, selectClear, selectClearSecond) {
                     selectClearSecond.setChoiceByValue('');
                     selectClearSecond.disable();
                 }
+                this.closest(".form-row__col-30").classList.remove("is-active");
             } else {
                 $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
                 if (selectClear) {
                     selectClear.enable();
                 }
+                this.closest(".form-row__col-30").classList.add("is-active");
+                if (!flagActiveItem){
+                    cntParamСontent.textContent = +cntParamСontent.textContent + 1;
+                }
+
             }
             $('.custom-select-inner:not(".select-no_reset") .choices__item--choice[data-id=2]').attr("data-value", "reset");
         },

@@ -460,6 +460,7 @@ const transmissionSelect = document.getElementById('transmission');
 
 
 function listItemMultiple(item) {
+    let val = item.value
     setTimeout(()=>{
         let container = item.parentNode.querySelector(".choices__list--multiple");
         let allElem = Array.from(item.querySelectorAll("option")).map(item => item.innerText)
@@ -473,7 +474,9 @@ function listItemMultiple(item) {
               <div class="multipleSelectedCnt">(${item.length})</div>
               `;
         }else{
-            cntParam(-1 ,item.closest(".form-row__col"))
+            if(val !== ""){
+                cntParam(-1 ,item.closest(".form-row__col"))
+            }
             item.closest(".form-row__col").classList.remove("is-active")
         }
     })
@@ -505,7 +508,6 @@ function selectMultiple(item , name){
             setTimeout(()=>{
                 selectMultiple.removeActiveItems();
                 selectMultiple.hideDropdown()
-                cntParam(-1 ,this.closest(".form-row__col"))
                 this.closest(".form-row__col").classList.remove("is-active")
 
             })
@@ -691,7 +693,6 @@ function selectableItems(){
     });
     radioList.forEach((el)=>{
         let elValue = el.value.toLowerCase();
-        console.log(elValue)
         if (elValue !== "неважно" && elValue !== "все"){
             let str = `${el.value}`;
             saveParam.textContent = addBrandToString(str, saveParam.textContent);
@@ -699,6 +700,18 @@ function selectableItems(){
             saveParam.textContent = saveParam.textContent.replace(regEx, '')
         }
     })
+
+    let location = document.querySelectorAll(".form-row__col-30.is-active");
+
+    location.forEach((el, i)=>{
+        let content = el.querySelector(".choices__item--selectable").textContent.trim();
+        if(location.length - 1 === i ){
+            saveParam.textContent = saveParam.textContent + " " + content
+        }else{
+            saveParam.textContent = saveParam.textContent + ` ${content},`
+        }
+    })
+
 
 }
 let cntParamСontent = document.querySelector(".cnt-parameters");
