@@ -107,6 +107,14 @@ $("body").on("click", function () {
     if(!target.closest(".save-search-popup").length && !target.closest(".save-search").length){
         $(".save-search-popup").removeClass("active");
     }
+
+    if(target.closest(".remove-save-item").length){
+        target.closest(".save-list__item").remove()
+    }else if(!target.closest(".save-list-container").length && !target.closest(".save-list").length){
+        $(".save-list").removeClass("active")
+    }
+
+
 })
 
 
@@ -609,10 +617,114 @@ $(".all-parameters").on("click" , function (){
     }
 })
 
+const templateItemListSave = (i, brand, info, checked , select)=>{
+    return`<div class="save-list__item">
+                <a href="#" class="search-popup__mark">${brand}</a>
+                <a href="#" class="search-popup__parameters">${info}</a>
+                <div class="form-row form-row-checkbox form-row-checkbox--selection">
+                    <input type="checkbox" class="input-checkbox" name="emailMes" id="emailMes-${i}" ${checked}>
+                    <label for="emailMes-${i}" class="checkbox-label">Уведомления на электронную почту</label>
+                </div>
+                                
+                <div class="form-group custom-select-inner form-group-custom-select color-select">
+                    <select name="type-moto" class="select-type custom-select right-select" id="custom-select-${i}">
+                        <option value="">
+                            Получать письма
+                        </option>
+                        <option value="reset">
+                            Сбросить
+                        </option>
+                        <option value="2001">
+                            Получать письма каждые 4 часа
+                        </option>
+                        <option value="2002">
+                            Получать письма каждые 8 часа
+                        </option>
+                        <option value="2003">
+                            Получать письма каждые 24 часа
+                        </option>
+                        <option value="${select}" selected>${select}</option>
+                    </select>
+                </div>
+                <div class="remove-save-item">
+                                <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10.2853 15.9999H3.42815C2.48284 15.9999 1.71387 15.2309 1.71387 14.2856V5.14272C1.71387 4.82717 1.96975 4.57129 2.2853 4.57129H11.4282C11.7437 4.57129 11.9996 4.82717 11.9996 5.14272V14.2856C11.9996 15.2309 11.2306 15.9999 10.2853 15.9999ZM2.85672 5.71415V14.2856C2.85672 14.6006 3.11312 14.857 3.42815 14.857H10.2853C10.6003 14.857 10.8567 14.6006 10.8567 14.2856V5.71415H2.85672Z" fill="#ED1C24"/>
+                                    <path d="M12 5.71446H1.71429C0.768972 5.71446 0 4.94549 0 4.00017C0 3.05486 0.768972 2.28589 1.71429 2.28589H12C12.9453 2.28589 13.7143 3.05486 13.7143 4.00017C13.7143 4.94549 12.9453 5.71446 12 5.71446ZM1.71429 3.42875C1.39926 3.42875 1.14286 3.68515 1.14286 4.00017C1.14286 4.3152 1.39926 4.5716 1.71429 4.5716H12C12.315 4.5716 12.5714 4.3152 12.5714 4.00017C12.5714 3.68515 12.315 3.42875 12 3.42875H1.71429Z" fill="#ED1C24"/>
+                                    <path d="M9.14286 3.42857H4.57143C4.25589 3.42857 4 3.17269 4 2.85714V0.571429C4 0.255886 4.25589 0 4.57143 0H9.14286C9.4584 0 9.71429 0.255886 9.71429 0.571429V2.85714C9.71429 3.17269 9.4584 3.42857 9.14286 3.42857ZM5.14286 2.28571H8.57143V1.14286H5.14286V2.28571Z" fill="#ED1C24"/>
+                                    <path d="M5.14272 13.7138C4.82717 13.7138 4.57129 13.4579 4.57129 13.1424V7.42812C4.57129 7.11258 4.82717 6.85669 5.14272 6.85669C5.45826 6.85669 5.71415 7.11258 5.71415 7.42812V13.1424C5.71415 13.4579 5.45826 13.7138 5.14272 13.7138Z" fill="#ED1C24"/>
+                                    <path d="M8.57094 13.7143C8.2554 13.7143 7.99951 13.4584 7.99951 13.1429V7.42861C7.99951 7.11306 8.2554 6.85718 8.57094 6.85718C8.88648 6.85718 9.14237 7.11306 9.14237 7.42861V13.1429C9.14237 13.4584 8.88648 13.7143 8.57094 13.7143Z" fill="#ED1C24"/>
+                                </svg>
+                                Удалить поиск
+                            </div>
+        </div>`
+}
+
+function removeDuplicates(el) {
+    const select = document.querySelector(el);
+    const textSet = new Set();
+    for (let i = select.options.length - 1; i >= 0; i--) {
+        const option = select.options[i];
+        if (textSet.has(option.text)) {
+            select.remove(i);
+        } else {
+            textSet.add(option.text);
+        }
+    }
+}
+
+let numItemSearch = 0;
+
 $(".save-search").on("click" , function (){
     this.classList.add("active");
     $(".save-search-popup").addClass("active");
     selectableItems();
+    let content = document.querySelector(".save-search-popup");
+    let saveBrandContent = document.querySelector(".save-search-popup .search-popup__mark").textContent;
+    let saveParamContent = document.querySelector(".save-search-popup .search-popup__parameters").textContent;
+    let handleInputCheck = content.querySelector("input").checked ?  "checked" : "";
+    let selectSaveInfo = document.querySelector(".save-search-popup .choices__list--single .choices__item--selectable").textContent.trim();
+
+    if(!saveBrandContent){
+        saveBrandContent = "Все марки"
+    }
+
+    let contentClone = content.cloneNode(true)
+    contentClone.querySelector(".search-popup__btn").remove();
+
+    $(".save-list").append(templateItemListSave(numItemSearch , saveBrandContent , saveParamContent , handleInputCheck,selectSaveInfo))
+    let selectNew = `#custom-select-${numItemSearch}`
+    removeDuplicates(selectNew)
+    let select = document.querySelector(selectNew);
+
+    const selectHistory = new Choices(select, {
+        searchEnabled: false,
+        shouldSort: false,
+        duplicateItemsAllowed:false
+    })
+
+    if(selectSaveInfo !== "Получать письма"){
+        select.closest(".choices__inner").classList.add("is-active");
+    }
+
+    select.addEventListener('change', function (event) {
+            let textContent = event.target.textContent.replace(/\s+/g, '')
+            if (textContent === "Сбросить") {
+                this.closest(".choices__inner").classList.remove("is-active")
+            }else{
+                this.closest(".choices__inner").classList.add("is-active")
+            }
+        },
+        false,
+    );
+
+    $(".save-list__item .search-popup__parameters").each(function (i, el){
+
+       if (!el.textContent){
+           el.remove()
+       }
+    })
+
+    numItemSearch++
 })
 
 $(".search-popup__btn").on("click" , function (){
@@ -633,9 +745,9 @@ function addBrandToString(brandName, brandString) {
 
 
 function selectableItems(){
-    let saveBrand = document.querySelector(".search-popup__mark");
+    let saveBrand = document.querySelector(".save-search-popup .search-popup__mark");
     saveBrand.textContent = ""
-    let saveParam = document.querySelector(".search-popup__parameters");
+    let saveParam = document.querySelector(".save-search-popup .search-popup__parameters");
     saveParam.textContent = ""
     let arrSelectable = document.querySelectorAll(".choices__inner.is-active , .form-row__col.is-active");
     let checkboxList = document.querySelectorAll("input[type='checkbox']:checked")
@@ -754,3 +866,7 @@ $('input[type="radio"]').on('click', function() {
         container.classList.remove("active");
     }
 });
+
+$(".save-list-btn").on("click" , function (){
+    $(".save-list").addClass("active");
+})
