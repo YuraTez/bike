@@ -374,7 +374,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     true
                 );
                 this.closest(".form-row__col").classList.add("is-active");
-                
+
                 modelChoices.enable();
 
                 hideSelectItem()
@@ -418,7 +418,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     this.closest(".form-row__col").classList.remove("is-active")
                 })
             }else{
-                console.log('1111')
                 cntParam(1 , this.closest(".form-row__col"))
                 this.closest(".form-row__col").classList.add("is-active")
                 listItemMultiple(this)
@@ -540,12 +539,20 @@ let listCustomSelect = document.querySelectorAll(".color-select select");
 
 listCustomSelect.forEach((el)=>{
     el.addEventListener("change",(event)=>{
+
         if(event.target.value !== "reset"){
-            cntParam(1 , event.target.closest(".choices__inner"))
             event.target.closest(".choices__inner").classList.add("is-active")
+            if(el.closest(".no-save")){
+                return
+            }
+            cntParam(1 , event.target.closest(".choices__inner"))
         }else{
-            cntParam(-1 , event.target.closest(".choices__inner"))
             event.target.closest(".choices__inner").classList.remove("is-active")
+            if(el.closest(".no-save")){
+                return
+            }
+            cntParam(-1 , event.target.closest(".choices__inner"))
+
         }
     })
 })
@@ -621,12 +628,12 @@ const templateItemListSave = (i, brand, info, checked , select)=>{
     return`<div class="save-list__item">
                 <a href="#" class="search-popup__mark">${brand}</a>
                 <a href="#" class="search-popup__parameters">${info}</a>
-                <div class="form-row form-row-checkbox form-row-checkbox--selection">
+                <div class="form-row form-row-checkbox form-row-checkbox--selection no-save">
                     <input type="checkbox" class="input-checkbox" name="emailMes" id="emailMes-${i}" ${checked}>
                     <label for="emailMes-${i}" class="checkbox-label">Уведомления на электронную почту</label>
                 </div>
                                 
-                <div class="form-group custom-select-inner form-group-custom-select color-select">
+                <div class="form-group custom-select-inner form-group-custom-select color-select no-save">
                     <select name="type-moto" class="select-type custom-select right-select" id="custom-select-${i}">
                         <option value="">
                             Получать письма
@@ -634,13 +641,13 @@ const templateItemListSave = (i, brand, info, checked , select)=>{
                         <option value="reset">
                             Сбросить
                         </option>
-                        <option value="2001">
+                        <option value="Получать письма каждые 4 часа">
                             Получать письма каждые 4 часа
                         </option>
-                        <option value="2002">
+                        <option value="Получать письма каждые 8 часа">
                             Получать письма каждые 8 часа
                         </option>
-                        <option value="2003">
+                        <option value=" Получать письма каждые 8 часа">
                             Получать письма каждые 24 часа
                         </option>
                         <option value="${select}" selected>${select}</option>
@@ -674,8 +681,8 @@ function removeDuplicates(el) {
 
 let numItemSearch = 0;
 
-$(".save-search").on("click" , function (){
-    this.classList.add("active");
+$(".save-search__prev").on("click" , function (){
+    this.parentElement.classList.add("active");
     $(".save-search-popup").addClass("active");
     selectableItems();
     let content = document.querySelector(".save-search-popup");
@@ -778,6 +785,9 @@ function selectableItems(){
                 saveParam.textContent = addBrandToString(brandMark, saveParam.textContent);
             })
         }else if(el.classList.contains("choices__inner")){
+            if(el.closest(".no-save")){
+                return
+            }
             let textContent = el.querySelector(".choices__item--selectable").getAttribute("data-value");
             if(el.closest(".year-end")){
                 let yearStart = document.querySelector(".year-start select").value
@@ -798,10 +808,12 @@ function selectableItems(){
     })
 
     checkboxList.forEach((el)=>{
-        let str = `${el.value}`;
-        saveParam.textContent = addBrandToString(str, saveParam.textContent);
-        let regEx = el.value + ",";
-        saveParam.textContent = saveParam.textContent.replace(regEx, '')
+        if(!el.closest(".no-save")){
+            let str = `${el.value}`;
+            saveParam.textContent = addBrandToString(str, saveParam.textContent);
+            let regEx = el.value + ",";
+            saveParam.textContent = saveParam.textContent.replace(regEx, '')
+        }
     });
     radioList.forEach((el)=>{
         let elValue = el.value.toLowerCase();
@@ -829,6 +841,7 @@ function selectableItems(){
 let cntParamСontent = document.querySelector(".cnt-parameters");
 
 function cntParam(num , el){
+    $(".save-search").removeClass("active");
     if(!el.classList.contains("is-active")){
         cntParamСontent.textContent = +cntParamСontent.textContent + num;
     }else if(num < 0){
@@ -847,7 +860,12 @@ document.addEventListener('DOMContentLoaded', function() {
     activeItems()
 }, false);
 
-$('.selection-block input[type="checkbox"]').on('click', function() {
+$('.selection-block input[type="checkbox"]').on('click', function () {
+    if (this.closest(".no-save")) {
+        return
+    }
+
+    $(".save-search").removeClass("active");
     if ($(this).is(':checked')) {
         cntParamСontent.textContent = +cntParamСontent.textContent + 1;
     } else {
@@ -869,4 +887,8 @@ $('input[type="radio"]').on('click', function() {
 
 $(".save-list-btn").on("click" , function (){
     $(".save-list").addClass("active");
+})
+
+$(".reset-parameters").on("click" , function (){
+    $(".save-search").removeClass("active");
 })
