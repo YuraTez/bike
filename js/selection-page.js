@@ -322,6 +322,7 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
     `
     }
+    let choicesInstances = [] ;
 
     function addSelectBrandMark(id){
 
@@ -348,6 +349,8 @@ document.addEventListener('DOMContentLoaded', function () {
             removeItemButton: true,
             duplicateItemsAllowed: true,
         });
+
+        choicesInstances.push(modelChoices)
 
         hideSelectItem()
         selectList[`brandChoices${id}`].addEventListener('change', function (event) {
@@ -429,24 +432,24 @@ document.addEventListener('DOMContentLoaded', function () {
             hideSelectItem()
         });
     }
+    let numberIdSelect = 1
 
     $("body").on("click" , function (event){
         let target = event.target;
 
         if(target.closest(".add-select")){
-
-            let numberId = $(".model-selection").children().length
-            $(".model-selection").append(templateSelect(numberId + 1))
-            addSelectBrandMark(numberId + 1)
+            $(".model-selection").append(templateSelect(numberIdSelect))
+            addSelectBrandMark(numberIdSelect)
             $(".remove-select").removeClass("hide");
             $(".remove-select").addClass("show");
+            numberIdSelect++
 
         } else if(target.closest(".remove-select")){
            let lengthItem = target.closest(".custom-select-inner").querySelectorAll(".is-active").length;
            let activeElem = target.closest(".custom-select-inner").querySelector(".is-active")
-           if(lengthItem < 4){
+           if(lengthItem < 4 && lengthItem){
                cntParam(-1 , activeElem)
-           }else{
+           }else if(lengthItem){
                cntParam(-2 , activeElem)
            }
             target.closest(".custom-select-inner").remove()
@@ -457,6 +460,16 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     })
 
+    $(".reset-parameters , .search-popup__btn").on("click" , function (){
+        $(".save-search").removeClass("active");
+        if(choicesInstances.length){
+            choicesInstances.forEach((el)=>{
+                setTimeout(()=> el.disable(),500)
+            })
+        }
+        setTimeout(()=> modelChoices.disable(),500)
+
+    })
 });
 
 const transportSelect = document.getElementById('transportSelect');
@@ -624,12 +637,12 @@ $(".all-parameters").on("click" , function (){
     }
 })
 
-const templateItemListSave = (i, brand, info, checked , select)=>{
+const templateItemListSave = (i, brand, info, checked )=>{
     return`<div class="save-list__item">
                 <a href="#" class="search-popup__mark">${brand}</a>
                 <a href="#" class="search-popup__parameters">${info}</a>
                 <div class="form-row form-row-checkbox form-row-checkbox--selection no-save">
-                    <input type="checkbox" class="input-checkbox" name="emailMes" id="emailMes-${i}" ${checked}>
+                    <input type="checkbox" class="input-checkbox dependent-checkbox-${i}" name="emailMes" id="emailMes-${i}" ${checked}>
                     <label for="emailMes-${i}" class="checkbox-label">Уведомления на электронную почту</label>
                 </div>
                                 
@@ -650,7 +663,6 @@ const templateItemListSave = (i, brand, info, checked , select)=>{
                         <option value=" Получать письма каждые 8 часа">
                             Получать письма каждые 24 часа
                         </option>
-                        <option value="${select}" selected>${select}</option>
                     </select>
                 </div>
                 <div class="remove-save-item">
@@ -681,6 +693,11 @@ function removeDuplicates(el) {
 
 let numItemSearch = 0;
 
+$(".save-search__save").on("click", function (){
+    this.parentElement.classList.add("active");
+    $(".save-search-popup").addClass("active");
+})
+
 $(".save-search__prev").on("click" , function (){
     this.parentElement.classList.add("active");
     $(".save-search-popup").addClass("active");
@@ -698,7 +715,7 @@ $(".save-search__prev").on("click" , function (){
     let contentClone = content.cloneNode(true)
     contentClone.querySelector(".search-popup__btn").remove();
 
-    $(".save-list").append(templateItemListSave(numItemSearch , saveBrandContent , saveParamContent , handleInputCheck,selectSaveInfo))
+    $(".save-list").append(templateItemListSave(numItemSearch , saveBrandContent , saveParamContent , handleInputCheck))
     let selectNew = `#custom-select-${numItemSearch}`
     removeDuplicates(selectNew)
     let select = document.querySelector(selectNew);
@@ -708,6 +725,32 @@ $(".save-search__prev").on("click" , function (){
         shouldSort: false,
         duplicateItemsAllowed:false
     })
+    if(!handleInputCheck){
+        selectHistory.disable()
+    }
+
+    function selectOptionByText(text) {
+        const options = select.options;
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].text === text) {
+                select.value = options[i].value;
+                selectHistory.setChoiceByValue(select.value);
+                break;
+            }
+        }
+    }
+
+    $(`.dependent-checkbox-${numItemSearch}`).on("change", function (){
+        if(this.checked){
+            selectHistory.enable()
+        }else{
+            selectHistory.disable()
+            selectHistory.containerInner.element.classList.remove("is-active")
+        }
+    })
+
+    selectOptionByText(selectSaveInfo);
+
 
     if(selectSaveInfo !== "Получать письма"){
         select.closest(".choices__inner").classList.add("is-active");
@@ -842,9 +885,9 @@ let cntParamСontent = document.querySelector(".cnt-parameters");
 
 function cntParam(num , el){
     $(".save-search").removeClass("active");
-    if(!el.classList.contains("is-active")){
+    if(!el.classList.contains("is-active") && el.closest(".inner-more-form")){
         cntParamСontent.textContent = +cntParamСontent.textContent + num;
-    }else if(num < 0){
+    }else if(num < 0 && el.closest(".inner-more-form")){
         cntParamСontent.textContent = +cntParamСontent.textContent + num;
     }
 }
@@ -876,6 +919,7 @@ $('.selection-block input[type="checkbox"]').on('click', function () {
 $('input[type="radio"]').on('click', function() {
     let container = this.closest(".form-row-radio-block")
     let elValue = $(this).val().toLowerCase();
+    $(".save-search").removeClass("active");
     if(!container.classList.contains("active")){
         container.classList.add("active");
         cntParamСontent.textContent = +cntParamСontent.textContent + 1;
@@ -889,6 +933,27 @@ $(".save-list-btn").on("click" , function (){
     $(".save-list").addClass("active");
 })
 
-$(".reset-parameters").on("click" , function (){
-    $(".save-search").removeClass("active");
+function showList(list , elPosition) {
+
+    const rect = elPosition.getBoundingClientRect();
+
+    list.style.top = `${rect.bottom + window.scrollY + 5}px`;
+    list.style.left = `${rect.left}px`;
+    list.style.width = `${rect.width}px`;
+    list.style.display = 'block';
+
+}
+
+$(".save-list").on("click" , function (event){
+
+    let target = event.target;
+    let parent = target.closest(".save-list__item");
+    let list = parent.querySelector(".choices__list--dropdown")
+
+    if(target.classList.contains("choices__inner") || target.closest(".choices__inner")){
+        let elPosition = parent.querySelector(".choices");
+        showList(list , elPosition)
+    }else{
+        list.style.width = 0
+    }
 })

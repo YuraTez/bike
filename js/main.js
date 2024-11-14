@@ -31,7 +31,7 @@ function changePrice(){
         endPrice.setAttribute("data-text" , "USD");
         if(startPrice.value){
             let sumStart = startPrice.value.slice(0,-5);
-            console.log(sumStart)
+
             startPrice.value = sumStart + ", " + "USD";
         }
         if(endPrice.value){
@@ -72,8 +72,22 @@ selectList.forEach((el) => {
             searchEnabled: false,
             shouldSort: false,
         })
+        if(el.closest(".save-search-popup")){
+            selectType.disable()
+        }
         listenerSelect(el, selectType)
         selectTypes.push(selectType);
+    }
+})
+
+$(".dependent-checkbox").on("change", function (){
+    let select = selectTypes.find((el) =>  el.containerInner.element.closest(".no-save"))
+
+    if(this.checked){
+        select.enable()
+    }else{
+        select.disable()
+        select.containerInner.element.classList.remove("is-active")
     }
 })
 
@@ -85,8 +99,9 @@ $(".reset-parameters , .search-popup__btn").on("click", function () {
         selectType.setChoiceByValue('');
     });
     regionSelect.setChoiceByValue('1');
+    regionSelect.disable()
     citySelect.setChoiceByValue('1');
-
+    citySelect.disable()
 
     setTimeout(()=>{
         $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
@@ -203,6 +218,7 @@ function addListener(el, select, selectClear, selectClearSecond) {
                 }
 
             }
+            $(".save-search").removeClass("active");
             $('.custom-select-inner:not(".select-no_reset") .choices__item--choice[data-id=2]').attr("data-value", "reset");
         },
         false,
