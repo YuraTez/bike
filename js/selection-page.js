@@ -112,6 +112,7 @@ $("body").on("click", function () {
         target.closest(".save-list__item").remove()
     }else if(!target.closest(".save-list-container").length && !target.closest(".save-list").length){
         $(".save-list").removeClass("active")
+        addScroll()
     }
 
 
@@ -552,15 +553,15 @@ let listCustomSelect = document.querySelectorAll(".color-select select");
 
 listCustomSelect.forEach((el)=>{
     el.addEventListener("change",(event)=>{
-
+console.log('1')
         if(event.target.value !== "reset"){
-            event.target.closest(".choices__inner").classList.add("is-active")
+            setTimeout(()=> event.target.closest(".choices__inner").classList.add("is-active"))
             if(el.closest(".no-save")){
                 return
             }
             cntParam(1 , event.target.closest(".choices__inner"))
         }else{
-            event.target.closest(".choices__inner").classList.remove("is-active")
+            setTimeout(()=>event.target.closest(".choices__inner").classList.remove("is-active"))
             if(el.closest(".no-save")){
                 return
             }
@@ -725,6 +726,9 @@ $(".save-search__prev").on("click" , function (){
         shouldSort: false,
         duplicateItemsAllowed:false
     })
+    setTimeout(()=>{
+        $('.custom-select-inner .choices__item--choice[data-id=1]').show();
+    },0)
     if(!handleInputCheck){
         selectHistory.disable()
     }
@@ -763,9 +767,15 @@ $(".save-search__prev").on("click" , function (){
             }else{
                 this.closest(".choices__inner").classList.add("is-active")
             }
+            addScroll()
+            setTimeout(()=>{
+                $('.custom-select-inner .choices__item--choice[data-id=1]').show();
+            },0)
         },
         false,
     );
+
+
 
     $(".save-list__item .search-popup__parameters").each(function (i, el){
 
@@ -803,10 +813,20 @@ function selectableItems(){
     let checkboxList = document.querySelectorAll("input[type='checkbox']:checked")
     let radioList = document.querySelectorAll("input[type='radio']:checked")
 
-
+   if(!arrSelectable.length){
+       saveBrand.textContent = "Все марки"
+   }
     arrSelectable.forEach((el)=>{
        let content = el.querySelector(".choices__item--selectable");
        let brand = el.closest(".row--brand");
+        let filteredElements = Array.from(arrSelectable).filter(element =>
+            element.closest('.row--brand') !== null
+        );
+        if (!filteredElements.length) {
+            saveBrand.textContent = "Все марки"
+        }
+
+
         if (brand) {
             saveBrand.textContent = addBrandToString(content.getAttribute("data-value"), saveBrand.textContent);
         } else if (el.classList.contains("custom-select--multiple")) {
@@ -917,6 +937,9 @@ $('.selection-block input[type="checkbox"]').on('click', function () {
 });
 
 $('input[type="radio"]').on('click', function() {
+    if (this.closest(".no-save")) {
+        return
+    }
     let container = this.closest(".form-row-radio-block")
     let elValue = $(this).val().toLowerCase();
     $(".save-search").removeClass("active");
@@ -937,11 +960,18 @@ function showList(list , elPosition) {
 
     const rect = elPosition.getBoundingClientRect();
 
-    list.style.top = `${rect.bottom + window.scrollY + 5}px`;
+    list.style.top = `${rect.bottom + 5}px`;
     list.style.left = `${rect.left}px`;
     list.style.width = `${rect.width}px`;
     list.style.display = 'block';
 
+}
+
+const scrollableElement = document.querySelector('.save-list');
+
+
+function preventScroll(event) {
+    event.preventDefault();
 }
 
 $(".save-list").on("click" , function (event){
@@ -953,7 +983,33 @@ $(".save-list").on("click" , function (event){
     if(target.classList.contains("choices__inner") || target.closest(".choices__inner")){
         let elPosition = parent.querySelector(".choices");
         showList(list , elPosition)
+        setTimeout(()=>{
+
+            if(target.closest(".is-open") !== null){
+                removeScroll()
+            }else{
+                addScroll()
+            }
+        },200)
+
     }else{
         list.style.width = 0
+        addScroll()
     }
 })
+
+
+function addScroll(){
+    const scrollTop = window.scrollY;
+
+    scrollableElement.removeEventListener('wheel', preventScroll);
+    scrollableElement.removeEventListener('touchmove', preventScroll);
+    $("body").removeClass("no-scroll")
+}
+
+function removeScroll(){
+    const scrollTop = window.scrollY;
+    $("body").addClass("no-scroll")
+    scrollableElement.addEventListener('wheel', preventScroll, { passive: false });
+    scrollableElement.addEventListener('touchmove', preventScroll, { passive: false });
+}

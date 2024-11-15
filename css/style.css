@@ -353,7 +353,7 @@
 
 .choices__list--dropdown {
   visibility: hidden;
-  z-index: 1;
+  z-index: 10;
   position: absolute;
   width: 100%;
   border: none;
@@ -1516,10 +1516,14 @@ input[type="file"] {
 .save-search {
   display: flex;
   align-items: center;
-  gap: 6px;
   font-size: 14px;
   color: #ed1c24;
   cursor: pointer;
+}
+
+.save-search span{
+  align-items: center;
+  gap: 6px;
 }
 
 .save-search:hover {
@@ -2091,12 +2095,16 @@ input[type="file"] {
   fill: #8c8c8c;
 }
 
+.save-search__prev{
+  display: flex;
+}
+
 .save-search.active .save-search__prev{
   display: none;
 }
 
 .save-search.active .save-search__save{
-  display: block;
+  display: flex;
 }
 
 .save-search-popup{
@@ -2385,6 +2393,8 @@ input[type="file"] {
   position: fixed;
   z-index: 1;
   height: initial;
+  min-height: 100px;
+  overflow-y: auto;
 }
 
 @media (max-width: 1550px) {
@@ -2407,11 +2417,23 @@ input[type="file"] {
 
   .save-list{
     width: calc(100vw - 20px);
-    right: -135px;
+    right: -148px;
   }
 
   .save-list__item{
     padding: 30px 20px;
   }
 
+}
+
+body.no-scroll{
+  width: 100%;
+  overflow-y:  hidden;
+  padding-right: 17px;
+}
+
+@media (max-width: 1300px) {
+  body.no-scroll{
+    padding-right: 0;
+  }
 }
