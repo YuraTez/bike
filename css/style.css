@@ -2429,6 +2429,9 @@ input[type="file"] {
 body.no-scroll{
   width: 100%;
   overflow-y:  hidden;
+}
+
+body.no-scroll.fake{
   padding-right: 17px;
 }
 

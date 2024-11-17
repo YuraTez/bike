@@ -727,11 +727,26 @@ $(".save-search__prev").on("click" , function (){
         duplicateItemsAllowed:false
     })
     setTimeout(()=>{
-        $('.custom-select-inner .choices__item--choice[data-id=1]').show();
+        $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
     },0)
     if(!handleInputCheck){
         selectHistory.disable()
     }
+
+    select.addEventListener("change" , function (){
+            let textContent = event.target.textContent.replace(/\s+/g, '')
+            if (textContent === "Сбросить") {
+                selectHistory.setChoiceByValue('');
+                setTimeout(() => {
+                    this.closest(".choices__inner").classList.remove("is-active")
+                }, 100)
+
+            }
+            setTimeout(() => {
+                $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
+            }, 500)
+
+    })
 
     function selectOptionByText(text) {
         const options = select.options;
@@ -790,6 +805,7 @@ $(".save-search__prev").on("click" , function (){
 $(".search-popup__btn").on("click" , function (){
     $(".save-search").removeClass("active");
     $(".save-search-popup").removeClass("active");
+    $(".selection-block").trigger('reset')
 })
 
 
@@ -998,6 +1014,12 @@ $(".save-list").on("click" , function (event){
     }
 })
 
+function hasScroll() {
+    const documentHeight = document.documentElement.scrollHeight;
+    const windowHeight = window.innerHeight;
+
+    return documentHeight > windowHeight;
+}
 
 function addScroll(){
     const scrollTop = window.scrollY;
@@ -1005,11 +1027,15 @@ function addScroll(){
     scrollableElement.removeEventListener('wheel', preventScroll);
     scrollableElement.removeEventListener('touchmove', preventScroll);
     $("body").removeClass("no-scroll")
+    $("body").removeClass("fake")
 }
 
 function removeScroll(){
     const scrollTop = window.scrollY;
     $("body").addClass("no-scroll")
+    if (hasScroll()) {
+        $("body").addClass("fake")
+    }
     scrollableElement.addEventListener('wheel', preventScroll, { passive: false });
     scrollableElement.addEventListener('touchmove', preventScroll, { passive: false });
 }
