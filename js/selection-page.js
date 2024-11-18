@@ -219,6 +219,12 @@ document.addEventListener('DOMContentLoaded', function () {
     setTimeout(moveSearchField, 100);
     hideSelectItem()
 
+
+    brandSelect.addEventListener('search', function (event) {
+        $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
+        $('.custom-select-inner .choices__item--choice[data-value="Любая"]').hide();
+
+    })
     brandSelect.addEventListener('change', function (event) {
         const selectedBrand = event.target.value;
 
@@ -354,6 +360,12 @@ document.addEventListener('DOMContentLoaded', function () {
         choicesInstances.push(modelChoices)
 
         hideSelectItem()
+
+        selectList[`brandChoices${id}`].addEventListener('search', function (event) {
+            $('.custom-select-inner .choices__item--choice[data-id=1]').hide();
+            $('.custom-select-inner .choices__item--choice[data-value="Любая"]').hide();
+
+        })
         selectList[`brandChoices${id}`].addEventListener('change', function (event) {
             const selectedBrand = event.target.value;
             if (selectedBrand.length > 0) {
